@@ -63,14 +63,14 @@ class CachedResponse
         return $this->createdAt > $yesterday;
     }
 
-    public function toSymfonyResponse(bool $fromCache): Response
+    public function toSymfonyResponse(): Response
     {
         return new Response(
             $this->response,
             200,
             [
                 'Content-Type' => 'application/json; charset=utf-8',
-                'X-Cache' => $fromCache ? 'HIT' : 'MISS',
+                'X-Cache' => 'HIT',
             ]
         );
     }

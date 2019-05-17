@@ -2,20 +2,20 @@
 
 namespace App\Factory;
 
+use App\Dto\UncachedResponse;
 use App\Entity\CachedResponse;
 use App\ValueObject\RequestHash;
 use DateTimeImmutable;
-use Psr\Http\Message\ResponseInterface;
 
 class CachedResponseFactory
 {
     public function createFromResponse(
         RequestHash $requestHash,
-        ResponseInterface $response
+        UncachedResponse $response
     ): CachedResponse {
         $cachedResponse = new CachedResponse();
         $cachedResponse->setRequestHash($requestHash);
-        $cachedResponse->setResponse($response->getBody()->getContents());
+        $cachedResponse->setResponse($response->getResponse());
         $cachedResponse->setCreatedAt(new DateTimeImmutable());
         return $cachedResponse;
     }
