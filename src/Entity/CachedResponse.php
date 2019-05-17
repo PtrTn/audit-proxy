@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -25,7 +26,7 @@ class CachedResponse
     private $requestHash;
 
     /**
-     * @var Response
+     * @var ResponseInterface
      * @ORM\Column(type="object")
      */
     private $response;
@@ -53,12 +54,12 @@ class CachedResponse
         return $this;
     }
 
-    public function getResponse(): Response
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }
 
-    public function setResponse(Response $response): self
+    public function setResponse(ResponseInterface $response): self
     {
         $this->response = $response;
 
@@ -79,12 +80,12 @@ class CachedResponse
 
     public function isValid(): bool
     {
-        // Todo, implement time based validation.
-        return true;
+        $yesterday = new \DateTimeImmutable('yesterday');
+        return $this->createdAt > $yesterday;
     }
 
     public function toSymfonyResponse(): Response
     {
-        return $this->response;
+        return new Response('todo: convert to symfony response 2');
     }
 }

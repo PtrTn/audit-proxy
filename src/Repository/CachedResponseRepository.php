@@ -6,6 +6,8 @@ use App\Entity\CachedResponse;
 use App\ValueObject\RequestHash;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -34,6 +36,15 @@ class CachedResponseRepository extends ServiceEntityRepository
                 ;
         } catch (NonUniqueResultException $e) {
             return null;
+        }
+    }
+
+    public function save(CachedResponse $cachedResponse) {
+        try {
+            $this->getEntityManager()->persist($cachedResponse);
+            $this->getEntityManager()->flush();
+        } catch (ORMInvalidArgumentException | ORMException $e) {
+            throw $e;
         }
     }
 }
