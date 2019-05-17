@@ -1,0 +1,10 @@
+registry:
+    path: /yarn/-/npm/v1/security/audits
+    controller: App\Controller\RegistryTestController::index
+    methods: POST
+
+registry-error:
+    path: /yarn/error/-/npm/v1/security/audits
+    controller: App\Controller\RegistryTestController::error
+    methods: POST
+
