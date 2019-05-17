@@ -15,7 +15,7 @@ class CachedResponseFactory
     ): CachedResponse {
         $cachedResponse = new CachedResponse();
         $cachedResponse->setRequestHash($requestHash);
-        $cachedResponse->setResponse($response);
+        $cachedResponse->setResponse($response->getBody()->getContents());
         $cachedResponse->setCreatedAt(new DateTimeImmutable());
         return $cachedResponse;
     }

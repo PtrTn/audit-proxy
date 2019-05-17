@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,8 +25,8 @@ class CachedResponse
     private $requestHash;
 
     /**
-     * @var ResponseInterface
-     * @ORM\Column(type="object")
+     * @var string
+     * @ORM\Column(type="text")
      */
     private $response;
 
@@ -37,16 +36,6 @@ class CachedResponse
      */
     private $createdAt;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getRequestHash(): ?string
-    {
-        return $this->requestHash;
-    }
-
     public function setRequestHash(string $requestHash): self
     {
         $this->requestHash = $requestHash;
@@ -54,21 +43,11 @@ class CachedResponse
         return $this;
     }
 
-    public function getResponse(): ResponseInterface
-    {
-        return $this->response;
-    }
-
-    public function setResponse(ResponseInterface $response): self
+    public function setResponse(string $response): self
     {
         $this->response = $response;
 
         return $this;
-    }
-
-    public function getCreatedAt(): ?DateTimeInterface
-    {
-        return $this->createdAt;
     }
 
     public function setCreatedAt(DateTimeInterface $createdAt): self
@@ -86,6 +65,12 @@ class CachedResponse
 
     public function toSymfonyResponse(): Response
     {
-        return new Response('todo: convert to symfony response 2');
+        return new Response(
+            $this->response,
+            200,
+            [
+                'Content-Type' => 'application/json; charset=utf-8',
+            ]
+        );
     }
 }
