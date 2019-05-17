@@ -1,3 +1,11 @@
 index:
     path: /-/npm/v1/security/audits
     controller: App\Controller\ProxyController::index
+    methods: POST
+
+
+test:
+    path: /test/-/npm/v1/security/audits
+    controller: App\Controller\ProxyController::test
+    methods: POST
+
