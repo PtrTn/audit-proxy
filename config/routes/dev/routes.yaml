@@ -3,6 +3,11 @@ hello-world:
     controller: App\Controller\HelloWorldController::index
     methods: GET
 
+hello-world-test:
+    path: /
+    controller: App\Controller\HelloWorldController::test
+    methods: GET
+
 registry:
     path: /yarn/-/npm/v1/security/audits
     controller: App\Controller\RegistryTestController::index
