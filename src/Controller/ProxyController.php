@@ -41,6 +41,10 @@ class ProxyController
 
     public function index(Request $request): Response
     {
+        // Todo, split into domain, application and infra layers.
+        // Todo, refresh cached data in background.
+        // Todo, add refresh job for 503 uncached responses.
+        // Todo, optionally decouple cached response entity and dto.
         $cachedResponse = $this->cachedResponseQueryHandler->handle(new FindCachedResponseQuery($request));
         if ($cachedResponse !== null) {
             return $cachedResponse->toSymfonyResponse();
