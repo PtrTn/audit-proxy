@@ -11,9 +11,4 @@ class HelloWorldController
     {
         return new JsonResponse('Hello world');
     }
-
-    public function test(): Response
-    {
-        return new JsonResponse('Hello world test');
-    }
 }
