@@ -5,12 +5,12 @@ This project attempts to provide a reverse proxy for the npm registry used by [n
 ## With Npm
 When running `npm audit` leverage the `--registry` option to point to the reverse proxy like so
 ```
-npm audit --registry http://peterton.nl/ 
+npm audit --registry http://peterton.nl/
 ```
 
 ## With Yarn
 Currently Yarn is not supported as `yarn audit` does not allow for the `--registry` option.
-After `https://github.com/yarnpkg/yarn/pull/7263` has been merged, yarn will be supported.
+After [this pull request](https://github.com/yarnpkg/yarn/pull/7263) has been merged, yarn will be supported.
 
 # Features
 Attempts to keep a cache for audit requests, which partly mitigates ["503 service unavailable" errors](https://github.com/yarnpkg/yarn/issues/6929).
