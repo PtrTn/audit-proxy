@@ -59,7 +59,7 @@ class CachedResponse
 
     public function isValid(): bool
     {
-        $yesterday = new \DateTimeImmutable('yesterday');
+        $yesterday = new \DateTimeImmutable('1 hour ago');
         return $this->createdAt > $yesterday;
     }
 

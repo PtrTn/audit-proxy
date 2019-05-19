@@ -40,7 +40,7 @@ class FindUncachedResponseQueryHandler
     {
         $guzzleRequest = $this->requestMapper->httpToGuzzle($query->getRequestBody());
         try {
-            $response = $this->client->send($guzzleRequest, ['timeout' => 5]);
+            $response = $this->client->send($guzzleRequest, ['timeout' => 10]);
             return $this->uncachedResponseFactory->createFromResponse($response);
         } catch (GuzzleException $e) {
             return null;
