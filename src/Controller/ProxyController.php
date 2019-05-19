@@ -45,18 +45,29 @@ class ProxyController
         // Todo, refresh cached data in background.
         // Todo, add refresh job for 503 uncached responses.
         // Todo, optionally decouple cached response entity and dto.
-        $cachedResponse = $this->cachedResponseQueryHandler->handle(new FindCachedResponseQuery($request));
+
+        $requestBody = $this->getRequestBody($request);
+        $cachedResponse = $this->cachedResponseQueryHandler->handle(new FindCachedResponseQuery($requestBody));
         if ($cachedResponse !== null) {
             return $cachedResponse->toSymfonyResponse();
         }
 
-        $uncachedResponse = $this->uncachedResponseQueryHandler->handle(new FindUncachedResponseQuery($request));
+        $uncachedResponse = $this->uncachedResponseQueryHandler->handle(new FindUncachedResponseQuery($requestBody));
         if ($uncachedResponse === null) {
             return new JsonResponse(['error' => 'Registry error'], 503);
         }
 
-        $this->responseCommandHandler->handle(new StoreResponseCommand($request, $uncachedResponse));
+        $this->responseCommandHandler->handle(new StoreResponseCommand($requestBody, $uncachedResponse));
 
         return $uncachedResponse->toSymfonyResponse();
+    }
+
+    private function getRequestBody(Request $request): string
+    {
+        if (in_array('gzip', $request->getEncodings())) {
+            return gzdecode($request->getContent());
+        }
+
+        return $request->getContent();
     }
 }

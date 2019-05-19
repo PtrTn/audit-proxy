@@ -2,25 +2,20 @@
 
 namespace App\Query;
 
-use Symfony\Component\HttpFoundation\Request;
-
 class FindCachedResponseQuery
 {
     /**
-     * @var Request
+     * @var string
      */
-    private $request;
+    private $requestBody;
 
-    public function __construct(Request $request)
+    public function __construct(string $requestBody)
     {
-        $this->request = $request;
+        $this->requestBody = $requestBody;
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest(): Request
+    public function getRequestBody(): string
     {
-        return $this->request;
+        return $this->requestBody;
     }
 }

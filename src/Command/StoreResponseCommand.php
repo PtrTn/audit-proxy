@@ -3,39 +3,30 @@
 namespace App\Command;
 
 use App\Dto\UncachedResponse;
-use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class StoreResponseCommand
 {
-
     /**
-     * @var Request
+     * @var string
      */
-    private $request;
+    private $requestBody;
 
     /**
      * @var UncachedResponse
      */
     private $response;
 
-    public function __construct(Request $request, UncachedResponse $response)
+    public function __construct(string $requestBody, UncachedResponse $response)
     {
-        $this->request = $request;
+        $this->requestBody = $requestBody;
         $this->response = $response;
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest(): Request
+    public function getRequestBody(): string
     {
-        return $this->request;
+        return $this->requestBody;
     }
 
-    /**
-     * @return UncachedResponse
-     */
     public function getResponse(): UncachedResponse
     {
         return $this->response;

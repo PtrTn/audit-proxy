@@ -28,7 +28,7 @@ class FindCachedResponseQueryHandler
 
     public function handle(FindCachedResponseQuery $query): ?CachedResponse
     {
-        $hash = $this->hashService->createFromRequest($query->getRequest());
+        $hash = $this->hashService->createFromRequest($query->getRequestBody());
         $response = $this->responseRepository->findByRequestHash($hash);
 
         if ($response === null) {

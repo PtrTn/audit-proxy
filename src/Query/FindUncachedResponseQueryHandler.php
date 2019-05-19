@@ -38,7 +38,7 @@ class FindUncachedResponseQueryHandler
 
     public function handle(FindUncachedResponseQuery $query): ?UncachedResponse
     {
-        $guzzleRequest = $this->requestMapper->httpToGuzzle($query->getRequest());
+        $guzzleRequest = $this->requestMapper->httpToGuzzle($query->getRequestBody());
         try {
             $response = $this->client->send($guzzleRequest, ['timeout' => 5]);
             return $this->uncachedResponseFactory->createFromResponse($response);

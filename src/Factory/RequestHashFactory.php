@@ -3,15 +3,12 @@
 namespace App\Factory;
 
 use App\ValueObject\RequestHash;
-use Symfony\Component\HttpFoundation\Request;
 
 class RequestHashFactory
 {
-
-    public function createFromRequest(Request $request): RequestHash
+    public function createFromRequest(string $requestBody): RequestHash
     {
-        $content = $request->getContent(false);
-        $hash = md5($content);
+        $hash = md5($requestBody);
         return new RequestHash($hash);
     }
 }
