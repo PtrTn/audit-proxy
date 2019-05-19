@@ -60,6 +60,7 @@
         }
     },
     "require-dev": {
+        "easycorp/easy-deploy-bundle": "^1.0",
         "symfony/maker-bundle": "^1.11"
     }
 }
