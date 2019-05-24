@@ -23,7 +23,7 @@ return new class extends DefaultDeployer
     public function beforePreparing()
     {
         // Add a fresh .env file to the shared folder from Git if it does not exist
-        $this->runRemote(sprintf('cp -n {{ deploy_dir }}/repo/.env {{ deploy_dir }}/shared/.env 2>/dev/null'));
+        $this->runRemote(sprintf('cp {{ deploy_dir }}/repo/.env {{ deploy_dir }}/shared/.env 2>/dev/null'));
         $this->runRemote(sprintf('cp -n {{ deploy_dir }}/repo/.env {{ deploy_dir }}/shared/.env.local 2>/dev/null'));
     }
 };
