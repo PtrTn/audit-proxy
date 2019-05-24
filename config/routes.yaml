@@ -1,6 +1,6 @@
 hello-world:
     path: /
-    controller: App\Controller\HelloWorldController::index
+    controller: App\Controller\HomeController::index
     methods: GET
 
 index:

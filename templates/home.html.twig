@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audit Proxy</title>
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"
+    >
+    <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+            integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+            crossorigin="anonymous"
+    >
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous">
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.scroll-down, .get-started').on('click', function(e) {
+                e.preventDefault()
+                $('html, body').animate({
+                    scrollTop: $('section:first-of-type').offset().top
+                }, 300)
+            })
+        })
+    </script>
+</head>
+<body>
+<header>
+    <h1 class="title">Audit Reverse Proxy</h1>
+    <h2 class="subtitle">Tired of "503 service unavailable" errors when running yarn or npm audits?*</h2>
+    <button class="get-started button button-primary button-large">Let's fix that *</button>
+    <p class="disclaimer">*Does not always fix that</p>
+
+    <a class="scroll-down" href="#"></a>
+</header>
+
+<section class="section-secondary">
+    <div class="row">
+        <div class="col col-md-6">
+            <h4>Npm</h4>
+            <p>If you are using <a target="_blank" href="https://docs.npmjs.com/cli/audit">Npm</a> then setting up is easy.</p>
+            <div class="stepper">
+                <div class="step">
+                    <p class="step-number">1</p>
+                    <p class="step-title">Ready, set, go!</p>
+                    <p>All you have to do is specify the <code>--registry</code> option like so</p>
+                    <code>npm audit --registry https://peterton.nl</code>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <h4>Yarn</h4>
+            <p>
+                Setting up for <a target="_blank" href="https://yarnpkg.com/en/docs/cli/audit">Yarn</a> requires some fiddling as the <code>--repository</code> option <a href="https://github.com/yarnpkg/yarn/pull/7263">is not supported yet.</a>
+            </p>
+            <div class="stepper">
+                <div class="step">
+                    <p class="step-number">1</p>
+                    <p class="step-title">Adjust hosts file</p>
+                    <p>Add the following line to your <a target="_blank" href="https://www.siteground.com/kb/how_to_use_the_hosts_file/">hosts file</a></p>
+                    <code>185.103.242.93 registry.yarnpkg.com</code>
+                </div>
+                <div class="step">
+                    <p class="step-number">2</p>
+                    <p class="step-title">Audit your heart out!</p>
+                    <code>yarn audit</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="footer-text">
+                    <p class="h3">What does it do?</p>
+                    <p>
+                        Audit requests for either yarn or npm are intercepted, sent to the audit servers, cached and then returned.
+                        For the next hour any requests for the same lock-file will be returned from cache.
+                        This provides more stability as well as speed for build pipelines.
+                    </p>
+                </div>
+            </div>
+            <div class="col col-md-4 col-md-offset-1">
+                <div class="footer-text">
+                    <p class="h3">Why?</p>
+                    <p>
+                        This project finds its origins in build pipelines failing due to false positives coming from code security audits.
+                        As this decreases down development velocity, it's bad for productivity as well as just plain annoying.
+                    </p>
+                </div>
+            </div>
+            <div class="col col-md-2 col-md-offset-1">
+                <h4 class="footer-links-category">Open sourced at</h4>
+                <ul class="footer-links">
+                    <li><a target="_blank" href="https://github.com/PtrTn/audit-proxy"> <i class="fab fa-github fa-lg"></i> Github</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <p class="copyright align-center">Made with <i class="fas fa-heart" style="color: #d32f2f"></i> by Peter Ton.</p>
+</footer>
+</body>
+</html>
