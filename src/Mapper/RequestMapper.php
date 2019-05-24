@@ -6,13 +6,21 @@ use GuzzleHttp\Psr7\Request as GuzzleRequest;
 
 class RequestMapper
 {
-    private const REGISTRY_URL = 'https://registry.yarnpkg.com/-/npm/v1/security/audits';
+    /**
+     * @var string
+     */
+    private $registryUrl;
+
+    public function __construct(string $registryUrl)
+    {
+        $this->registryUrl = $registryUrl;
+    }
 
     public function httpToGuzzle(string $requestBody): GuzzleRequest
     {
         return new GuzzleRequest(
             'POST',
-            self::REGISTRY_URL,
+            $this->registryUrl,
             [
                 'Content-Type'  => 'application/json',
                 'Accept'  => 'application/json',
