@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Audit Proxy</title>
+    <title>Audit Reverse Proxy</title>
     <link
             rel="stylesheet"
             href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"
@@ -14,21 +14,11 @@
             integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
             crossorigin="anonymous"
     >
-    <script
-            src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous">
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.scroll-down, .get-started').on('click', function(e) {
-                e.preventDefault()
-                $('html, body').animate({
-                    scrollTop: $('section:first-of-type').offset().top
-                }, 300)
-            })
-        })
-    </script>
+    <style>
+        code {
+            white-space: normal;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -108,5 +98,21 @@
     </div>
     <p class="copyright align-center">Made with <i class="fas fa-heart" style="color: #d32f2f"></i> by Peter Ton.</p>
 </footer>
+
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+</script>
+<script>
+    $(document).ready(function() {
+        $('.scroll-down, .get-started').on('click', function(e) {
+            e.preventDefault()
+            $('html, body').animate({
+                scrollTop: $('section:first-of-type').offset().top
+            }, 300)
+        })
+    })
+</script>
 </body>
 </html>
