@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Command\StoreResponseCommand;
 use App\Command\StoreResponseCommandHandler;
+use App\Decode\GzipDecoder;
 use App\Query\FindCachedResponseQuery;
 use App\Query\FindCachedResponseQueryHandler;
 use App\Query\FindUncachedResponseQuery;
@@ -29,14 +30,21 @@ class ProxyController
      */
     private $responseCommandHandler;
 
+    /**
+     * @var GzipDecoder
+     */
+    private $gzipDecoder;
+
     public function __construct(
         FindCachedResponseQueryHandler $cachedResponseQueryHandler,
         FindUncachedResponseQueryHandler $uncachedResponseQueryHandler,
-        StoreResponseCommandHandler $responseCommandHandler
+        StoreResponseCommandHandler $responseCommandHandler,
+        GzipDecoder $gzipDecoder
     ){
         $this->cachedResponseQueryHandler = $cachedResponseQueryHandler;
         $this->uncachedResponseQueryHandler = $uncachedResponseQueryHandler;
         $this->responseCommandHandler = $responseCommandHandler;
+        $this->gzipDecoder = $gzipDecoder;
     }
 
     public function index(Request $request): Response
@@ -46,7 +54,7 @@ class ProxyController
         // Todo, add refresh job for 503 uncached responses.
         // Todo, optionally decouple cached response entity and dto.
 
-        $requestBody = $this->getRequestBody($request);
+        $requestBody = $this->gzipDecoder->decode($request->getContent());
         $cachedResponse = $this->cachedResponseQueryHandler->handle(new FindCachedResponseQuery($requestBody));
         if ($cachedResponse !== null) {
             return $cachedResponse->toSymfonyResponse();
@@ -60,14 +68,5 @@ class ProxyController
         $this->responseCommandHandler->handle(new StoreResponseCommand($requestBody, $uncachedResponse));
 
         return $uncachedResponse->toSymfonyResponse();
-    }
-
-    private function getRequestBody(Request $request): string
-    {
-        if (in_array('gzip', $request->getEncodings())) {
-            return gzdecode($request->getContent());
-        }
-
-        return $request->getContent();
     }
 }
