@@ -19,6 +19,7 @@ class CachedResponseFactory
         $cachedResponse->setRequestBody($requestBody);
         $cachedResponse->setResponse($response->getResponse());
         $cachedResponse->setCreatedAt(new DateTimeImmutable());
+        $cachedResponse->setUpdatedAt(new DateTimeImmutable());
         return $cachedResponse;
     }
 }
