@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Controller;
+namespace App\Infrastructure\Controller;
 
-use App\Command\StoreResponseCommand;
-use App\Command\StoreResponseCommandHandler;
-use App\Decode\GzipDecoder;
-use App\Query\FindCachedResponseQuery;
-use App\Query\FindCachedResponseQueryHandler;
-use App\Query\FindUncachedResponseQuery;
-use App\Query\FindUncachedResponseQueryHandler;
+use App\Application\Command\StoreResponseCommand;
+use App\Application\Command\StoreResponseCommandHandler;
+use App\Application\Decode\GzipDecoder;
+use App\Application\Query\FindCachedResponseQuery;
+use App\Application\Query\FindCachedResponseQueryHandler;
+use App\Application\Query\FindUncachedResponseQuery;
+use App\Application\Query\FindUncachedResponseQueryHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +49,6 @@ class ProxyController
 
     public function index(Request $request): Response
     {
-        // Todo, split into domain, application and infra layers.
         // Todo, refresh cached data in background.
         // Todo, add refresh job for 503 uncached responses.
         // Todo, optionally decouple cached response entity and dto.

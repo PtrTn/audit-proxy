@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace App\Infrastructure\Repository;
 
-use App\Entity\CachedResponse;
-use App\ValueObject\RequestHash;
+use App\Infrastructure\Entity\CachedResponse;
+use App\Domain\ValueObject\RequestHash;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;

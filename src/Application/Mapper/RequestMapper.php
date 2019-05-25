@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mapper;
+namespace App\Application\Mapper;
 
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
 

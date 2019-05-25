@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Command;
+namespace App\Application\Command;
 
 use App\Factory\CachedResponseFactory;
 use App\Factory\RequestHashFactory;
-use App\Repository\CachedResponseRepository;
+use App\Infrastructure\Repository\CachedResponseRepository;
 
 class StoreResponseCommandHandler
 {

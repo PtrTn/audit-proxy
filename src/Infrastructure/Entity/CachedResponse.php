@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entity;
+namespace App\Infrastructure\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CachedResponseRepository")
+ * @ORM\Entity(repositoryClass="App\Infrastructure\Repository\CachedResponseRepository")
  */
 class CachedResponse
 {

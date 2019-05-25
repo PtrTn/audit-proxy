@@ -2,9 +2,9 @@
 
 namespace App\Factory;
 
-use App\Dto\UncachedResponse;
-use App\Entity\CachedResponse;
-use App\ValueObject\RequestHash;
+use App\Application\Dto\UncachedResponse;
+use App\Infrastructure\Entity\CachedResponse;
+use App\Domain\ValueObject\RequestHash;
 use DateTimeImmutable;
 
 class CachedResponseFactory

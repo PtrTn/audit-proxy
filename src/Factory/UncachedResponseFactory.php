@@ -2,7 +2,7 @@
 
 namespace App\Factory;
 
-use App\Dto\UncachedResponse;
+use App\Application\Dto\UncachedResponse;
 use Psr\Http\Message\ResponseInterface;
 
 class UncachedResponseFactory

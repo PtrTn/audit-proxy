@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Query;
+namespace App\Application\Query;
 
-class FindCachedResponseQuery
+class FindUncachedResponseQuery
 {
     /**
      * @var string

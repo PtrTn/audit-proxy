@@ -1,9 +1,9 @@
-hello-world:
+home:
     path: /
-    controller: App\Controller\HomeController::index
+    controller: App\Infrastructure\Controller\HomeController::index
     methods: GET
 
 index:
     path: /-/npm/v1/security/audits
-    controller: App\Controller\ProxyController::index
+    controller: App\Infrastructure\Controller\ProxyController::index
     methods: POST

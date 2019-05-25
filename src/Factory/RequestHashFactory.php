@@ -2,7 +2,7 @@
 
 namespace App\Factory;
 
-use App\ValueObject\RequestHash;
+use App\Domain\ValueObject\RequestHash;
 
 class RequestHashFactory
 {

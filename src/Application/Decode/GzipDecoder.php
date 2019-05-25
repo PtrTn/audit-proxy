@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Decode;
+namespace App\Application\Decode;
 
 class GzipDecoder
 {

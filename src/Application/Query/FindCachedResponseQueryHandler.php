@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Query;
+namespace App\Application\Query;
 
-use App\Entity\CachedResponse;
+use App\Infrastructure\Entity\CachedResponse;
 use App\Factory\RequestHashFactory;
-use App\Repository\CachedResponseRepository;
+use App\Infrastructure\Repository\CachedResponseRepository;
 
 class FindCachedResponseQueryHandler
 {
