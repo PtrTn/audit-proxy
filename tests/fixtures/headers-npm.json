@@ -1,0 +1,15 @@
+{
+  "Accept": "*/*",
+  "Accept-Encoding": "gzip,deflate",
+  "Connection": "keep-alive",
+  "Content-Encoding": "gzip",
+  "Content-Length": 73012,
+  "Content-Type": "application/json, application/octet-stream",
+  "Host": "peterton.nl",
+  "Npm-In-Ci": "false",
+  "Npm-Scope": "",
+  "Npm-Session": "4a4d074851a25e33",
+  "Referer": "undefined",
+  "User-Agent": "npm/6.4.1 node/v10.15.3 win32 x64",
+  "X-Php-Ob-Level": 1
+}
