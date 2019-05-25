@@ -23,7 +23,7 @@ class YarnProxyAuditRequestTest extends TestCase
     {
         $request = new Request(
             'POST',
-            new Uri('127.0.0.1/-/npm/v1/security/audits'),
+            new Uri('http://audit-proxy.test/-/npm/v1/security/audits'),
             json_decode(file_get_contents(__DIR__ . '/../fixtures/headers-yarn.json'), true),
             fopen(__DIR__ . '/../fixtures/request-body-yarn.gz', 'r')
         );
