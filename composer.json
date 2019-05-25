@@ -63,6 +63,7 @@
     },
     "require-dev": {
         "easycorp/easy-deploy-bundle": "^1.0",
-        "symfony/maker-bundle": "^1.11"
+        "symfony/maker-bundle": "^1.11",
+        "symfony/phpunit-bridge": "4.2.*"
     }
 }
