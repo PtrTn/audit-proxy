@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto;
+namespace App\Application\Dto;
 
 use Symfony\Component\HttpFoundation\Response;
 

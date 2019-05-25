@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Command;
+namespace App\Application\Command;
 
-use App\Dto\UncachedResponse;
+use App\Application\Dto\UncachedResponse;
 
 class StoreResponseCommand
 {

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Query;
+namespace App\Application\Query;
 
-use App\Dto\UncachedResponse;
+use App\Application\Dto\UncachedResponse;
+use App\Application\Query\FindUncachedResponseQuery;
 use App\Factory\UncachedResponseFactory;
-use App\Mapper\RequestMapper;
+use App\Application\Mapper\RequestMapper;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
