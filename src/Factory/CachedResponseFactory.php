@@ -11,10 +11,12 @@ class CachedResponseFactory
 {
     public function createFromResponse(
         RequestHash $requestHash,
+        string $requestBody,
         UncachedResponse $response
     ): CachedResponse {
         $cachedResponse = new CachedResponse();
         $cachedResponse->setRequestHash($requestHash);
+        $cachedResponse->setRequestBody($requestBody);
         $cachedResponse->setResponse($response->getResponse());
         $cachedResponse->setCreatedAt(new DateTimeImmutable());
         return $cachedResponse;

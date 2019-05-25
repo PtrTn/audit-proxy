@@ -28,6 +28,12 @@ class CachedResponse
      * @var string
      * @ORM\Column(type="text")
      */
+    private $requestBody;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
     private $response;
 
     /**
@@ -39,6 +45,14 @@ class CachedResponse
     public function setRequestHash(string $requestHash): self
     {
         $this->requestHash = $requestHash;
+
+        return $this;
+    }
+
+
+    public function setRequestBody(string $requestBody): self
+    {
+        $this->requestBody = $requestBody;
 
         return $this;
     }
