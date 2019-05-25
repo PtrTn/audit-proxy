@@ -19,6 +19,10 @@ return new class extends DefaultDeployer
             ->resetOpCacheFor('http://peterton.nl/')
         ;
     }
+    public function beforeStartingDeploy()
+    {
+        $this->runLocal('bin/phpunit');
+    }
 
     public function beforePreparing()
     {
