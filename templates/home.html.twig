@@ -79,8 +79,9 @@
                     <p class="h3">What does it do?</p>
                     <p>
                         Audit requests for either yarn or npm are intercepted, sent to the audit servers, cached and then returned.
-                        For the next hour any requests for the same lock-file will be returned from cache.
-                        This provides more stability as well as speed for build pipelines.
+                        This cache is kept fresh as long as it's used.
+                        In case a 503 is encountered during the first audit, the request will be stored, retried and cached in the background.
+                        All in all this provides more stability as wel as a small performance boost to build pipelines.
                     </p>
                 </div>
             </div>
