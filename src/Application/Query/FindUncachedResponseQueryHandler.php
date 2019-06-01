@@ -4,7 +4,7 @@ namespace App\Application\Query;
 
 use App\Application\Dto\UncachedResponse;
 use App\Application\Query\FindUncachedResponseQuery;
-use App\Factory\UncachedResponseFactory;
+use App\Application\Factory\UncachedResponseFactory;
 use App\Application\Mapper\RequestMapper;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;

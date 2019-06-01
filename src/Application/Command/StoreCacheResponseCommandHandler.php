@@ -2,13 +2,12 @@
 
 namespace App\Application\Command;
 
-use App\Factory\CachedResponseFactory;
-use App\Factory\RequestHashFactory;
+use App\Infrastructure\Factory\CachedResponseFactory;
+use App\Application\Factory\RequestHashFactory;
 use App\Infrastructure\Repository\CachedResponseRepository;
 
-class StoreResponseCommandHandler
+class StoreCacheResponseCommandHandler
 {
-
     /**
      * @var RequestHashFactory
      */
@@ -34,7 +33,7 @@ class StoreResponseCommandHandler
         $this->cachedResponseFactory = $cachedResponseFactory;
     }
 
-    public function handle(StoreResponseCommand $command): void
+    public function handle(StoreCacheResponseCommand $command): void
     {
         $hash = $this->requestHashFactory->createFromRequest($command->getRequestBody());
         $cachedResponse = $this->cachedResponseFactory->createFromResponse(

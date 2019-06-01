@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Factory;
+namespace App\Application\Factory;
 
 use App\Application\Dto\UncachedResponse;
 use Psr\Http\Message\ResponseInterface;
