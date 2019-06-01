@@ -4,7 +4,9 @@ namespace App\Infrastructure\Repository;
 
 use App\Infrastructure\Entity\CachedResponse;
 use App\Domain\ValueObject\RequestHash;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -32,9 +34,19 @@ class CachedResponseRepository extends ServiceEntityRepository
         $this->logger = $logger;
     }
 
-    public function findMostOutdated()
+    /**
+     * @return CachedResponse[]
+     * @throws \Exception
+     */
+    public function findMostOutdated(): array
     {
-        return $this->findBy([], ['updatedAt' => 'desc'], 5);
+        return $this->createQueryBuilder('cr')
+            ->where('cr.updatedAt < :threshold')
+            ->setParameter('threshold', new DateTimeImmutable('-5 minutes'), Type::DATETIME)
+            ->orderBy('cr.updatedAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
     }
 
     public function findByRequestHash(RequestHash $hash): ?CachedResponse
