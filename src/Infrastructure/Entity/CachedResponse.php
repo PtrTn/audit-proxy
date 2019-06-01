@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Entity;
 
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CachedResponse
 {
     /**
+     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -28,6 +30,12 @@ class CachedResponse
      * @var string
      * @ORM\Column(type="text")
      */
+    private $requestBody;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
     private $response;
 
     /**
@@ -36,9 +44,28 @@ class CachedResponse
      */
     private $createdAt;
 
+    /**
+     * @var DateTimeInterface
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
     public function setRequestHash(string $requestHash): self
     {
         $this->requestHash = $requestHash;
+
+        return $this;
+    }
+
+
+    public function setRequestBody(string $requestBody): self
+    {
+        $this->requestBody = $requestBody;
 
         return $this;
     }
@@ -57,9 +84,14 @@ class CachedResponse
         return $this;
     }
 
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
     public function isValid(): bool
     {
-        $yesterday = new \DateTimeImmutable('1 hour ago');
+        $yesterday = new DateTimeImmutable('1 hour ago');
         return $this->createdAt > $yesterday;
     }
 
@@ -73,5 +105,10 @@ class CachedResponse
                 'X-Cache' => 'HIT',
             ]
         );
+    }
+
+    public function getRequestBody(): string
+    {
+        return $this->requestBody;
     }
 }

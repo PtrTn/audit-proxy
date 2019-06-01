@@ -37,7 +37,11 @@ class StoreResponseCommandHandler
     public function handle(StoreResponseCommand $command): void
     {
         $hash = $this->requestHashFactory->createFromRequest($command->getRequestBody());
-        $cachedResponse = $this->cachedResponseFactory->createFromResponse($hash, $command->getResponse());
+        $cachedResponse = $this->cachedResponseFactory->createFromResponse(
+            $hash,
+            $command->getRequestBody(),
+            $command->getResponse()
+        );
         $this->responseRepository->save($cachedResponse);
     }
 }
