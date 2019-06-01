@@ -4,7 +4,7 @@ namespace App\Application\Command;
 
 use App\Application\Dto\UncachedResponse;
 
-class StoreResponseCommand
+class StoreCacheResponseCommand
 {
     /**
      * @var string

@@ -3,7 +3,7 @@
 namespace App\Application\Query;
 
 use App\Infrastructure\Entity\CachedResponse;
-use App\Factory\RequestHashFactory;
+use App\Application\Factory\RequestHashFactory;
 use App\Infrastructure\Repository\CachedResponseRepository;
 
 class FindCachedResponseQueryHandler

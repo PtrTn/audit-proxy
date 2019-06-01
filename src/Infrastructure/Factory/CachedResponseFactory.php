@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Factory;
+namespace App\Infrastructure\Factory;
 
 use App\Application\Dto\UncachedResponse;
 use App\Infrastructure\Entity\CachedResponse;
@@ -21,6 +21,7 @@ class CachedResponseFactory
         $cachedResponse->setCreatedAt(new DateTimeImmutable());
         $cachedResponse->setUpdatedAt(new DateTimeImmutable());
         $cachedResponse->setLastCacheHitAt(new DateTimeImmutable());
+
         return $cachedResponse;
     }
 }

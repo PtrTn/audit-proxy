@@ -2,8 +2,10 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Application\Command\StoreResponseCommand;
-use App\Application\Command\StoreResponseCommandHandler;
+use App\Application\Command\StoreCacheRequestCommand;
+use App\Application\Command\StoreCacheRequestCommandHandler;
+use App\Application\Command\StoreCacheResponseCommand;
+use App\Application\Command\StoreCacheResponseCommandHandler;
 use App\Application\Command\UpdateCacheLastHitCommand;
 use App\Application\Command\UpdateCacheLastHitCommandHandler;
 use App\Application\Decode\GzipDecoder;
@@ -29,9 +31,14 @@ class ProxyController
     private $uncachedResponseQueryHandler;
 
     /**
-     * @var StoreResponseCommandHandler
+     * @var StoreCacheResponseCommandHandler
      */
     private $storeResponseCommandHandler;
+
+    /**
+     * @var StoreCacheRequestCommandHandler
+     */
+    private $storeRequestCommandHandler;
 
     /**
      * @var UpdateCacheLastHitCommandHandler
@@ -46,20 +53,21 @@ class ProxyController
     public function __construct(
         FindCachedResponseQueryHandler $cachedResponseQueryHandler,
         FindUncachedResponseQueryHandler $uncachedResponseQueryHandler,
-        StoreResponseCommandHandler $storeResponseCommandHandler,
+        StoreCacheResponseCommandHandler $storeResponseCommandHandler,
+        StoreCacheRequestCommandHandler $storeRequestCommandHandler,
         UpdateCacheLastHitCommandHandler $lastHitCommandHandler,
         GzipDecoder $gzipDecoder
     ){
         $this->cachedResponseQueryHandler = $cachedResponseQueryHandler;
         $this->uncachedResponseQueryHandler = $uncachedResponseQueryHandler;
         $this->storeResponseCommandHandler = $storeResponseCommandHandler;
+        $this->storeRequestCommandHandler = $storeRequestCommandHandler;
         $this->lastHitCommandHandler = $lastHitCommandHandler;
         $this->gzipDecoder = $gzipDecoder;
     }
 
     public function index(Request $request): Response
     {
-        // Todo, add refresh job for 503 uncached responses.
         // Todo, optionally decouple cached response entity and dto.
 
         $requestBody = $this->gzipDecoder->decode($request->getContent());
@@ -74,10 +82,11 @@ class ProxyController
 
         $uncachedResponse = $this->uncachedResponseQueryHandler->handle(new FindUncachedResponseQuery($requestBody));
         if ($uncachedResponse === null) {
+            $this->storeRequestCommandHandler->handle(new StoreCacheRequestCommand($requestBody));
             return new JsonResponse(['error' => 'Registry error'], 503);
         }
 
-        $this->storeResponseCommandHandler->handle(new StoreResponseCommand($requestBody, $uncachedResponse));
+        $this->storeResponseCommandHandler->handle(new StoreCacheResponseCommand($requestBody, $uncachedResponse));
 
         return $uncachedResponse->toSymfonyResponse();
     }

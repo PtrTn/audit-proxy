@@ -2,13 +2,13 @@
 
 namespace App\Application\Command;
 
-use App\Factory\CachedResponseFactory;
-use App\Factory\RequestHashFactory;
+use App\Infrastructure\Factory\CachedResponseFactory;
+use App\Application\Factory\RequestHashFactory;
 use App\Infrastructure\Repository\CachedResponseRepository;
+use App\Infrastructure\Repository\UncachedResponseRepository;
 
-class StoreResponseCommandHandler
+class StoreCacheResponseCommandHandler
 {
-
     /**
      * @var RequestHashFactory
      */
@@ -24,17 +24,24 @@ class StoreResponseCommandHandler
      */
     private $cachedResponseFactory;
 
+    /**
+     * @var UncachedResponseRepository
+     */
+    private $uncachedResponseRepository;
+
     public function __construct(
         RequestHashFactory $requestHashFactory,
         CachedResponseRepository $responseRepository,
-        CachedResponseFactory $cachedResponseFactory
+        CachedResponseFactory $cachedResponseFactory,
+        UncachedResponseRepository $uncachedResponseRepository
     ) {
         $this->requestHashFactory = $requestHashFactory;
         $this->responseRepository = $responseRepository;
         $this->cachedResponseFactory = $cachedResponseFactory;
+        $this->uncachedResponseRepository = $uncachedResponseRepository;
     }
 
-    public function handle(StoreResponseCommand $command): void
+    public function handle(StoreCacheResponseCommand $command): void
     {
         $hash = $this->requestHashFactory->createFromRequest($command->getRequestBody());
         $cachedResponse = $this->cachedResponseFactory->createFromResponse(
@@ -43,5 +50,7 @@ class StoreResponseCommandHandler
             $command->getResponse()
         );
         $this->responseRepository->save($cachedResponse);
+
+        $this->uncachedResponseRepository->deleteForHash($hash);
     }
 }
