@@ -50,6 +50,12 @@ class CachedResponse
      */
     private $updatedAt;
 
+    /**
+     * @var DateTimeInterface
+     * @ORM\Column(type="datetime")
+     */
+    private $lastCacheHitAt;
+
     public function setId(int $id): void
     {
         $this->id = $id;
@@ -61,7 +67,6 @@ class CachedResponse
 
         return $this;
     }
-
 
     public function setRequestBody(string $requestBody): self
     {
@@ -87,6 +92,16 @@ class CachedResponse
     public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function setLastCacheHitAt(DateTimeInterface $lastCacheHitAt): void
+    {
+        $this->lastCacheHitAt = $lastCacheHitAt;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function isValid(): bool

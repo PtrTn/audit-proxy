@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -36,7 +37,7 @@ class CachedResponseRepository extends ServiceEntityRepository
 
     /**
      * @return CachedResponse[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function findMostOutdated(): array
     {
@@ -45,6 +46,19 @@ class CachedResponseRepository extends ServiceEntityRepository
             ->setParameter('threshold', new DateTimeImmutable('-5 minutes'), Type::DATETIME)
             ->orderBy('cr.updatedAt', 'DESC')
             ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return CachedResponse[]
+     * @throws Exception
+     */
+    public function findUnused(): array
+    {
+        return $this->createQueryBuilder('cr')
+            ->where('cr.lastCacheHitAt < :threshold')
+            ->setParameter('threshold', new DateTimeImmutable('-1 week'), Type::DATETIME)
             ->getQuery()
             ->getResult();
     }
@@ -71,6 +85,17 @@ class CachedResponseRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         } catch (ORMInvalidArgumentException | ORMException $e) {
             $this->logger->error('Unable to save record to database', [
+                'record' => $cachedResponse
+            ]);
+        }
+    }
+
+    public function delete(CachedResponse $cachedResponse) {
+        try {
+            $this->getEntityManager()->remove($cachedResponse);
+            $this->getEntityManager()->flush();
+        } catch (ORMInvalidArgumentException | ORMException $e) {
+            $this->logger->error('Unable to delete record from database', [
                 'record' => $cachedResponse
             ]);
         }

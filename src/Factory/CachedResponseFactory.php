@@ -20,6 +20,7 @@ class CachedResponseFactory
         $cachedResponse->setResponse($response->getResponse());
         $cachedResponse->setCreatedAt(new DateTimeImmutable());
         $cachedResponse->setUpdatedAt(new DateTimeImmutable());
+        $cachedResponse->setLastCacheHitAt(new DateTimeImmutable());
         return $cachedResponse;
     }
 }
