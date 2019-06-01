@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -18,9 +19,17 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class CachedResponseRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(
+        RegistryInterface $registry,
+        LoggerInterface $logger
+    ) {
         parent::__construct($registry, CachedResponse::class);
+        $this->logger = $logger;
     }
 
     public function findByRequestHash(RequestHash $hash): ?CachedResponse
@@ -44,7 +53,9 @@ class CachedResponseRepository extends ServiceEntityRepository
             $this->getEntityManager()->persist($cachedResponse);
             $this->getEntityManager()->flush();
         } catch (ORMInvalidArgumentException | ORMException $e) {
-            throw $e;
+            $this->logger->error('Unable to save record to database', [
+                'record' => $cachedResponse
+            ]);
         }
     }
 }
