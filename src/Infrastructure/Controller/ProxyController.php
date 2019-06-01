@@ -36,6 +36,11 @@ class ProxyController
     private $storeResponseCommandHandler;
 
     /**
+     * @var StoreCacheRequestCommandHandler
+     */
+    private $storeRequestCommandHandler;
+
+    /**
      * @var UpdateCacheLastHitCommandHandler
      */
     private $lastHitCommandHandler;
@@ -49,19 +54,20 @@ class ProxyController
         FindCachedResponseQueryHandler $cachedResponseQueryHandler,
         FindUncachedResponseQueryHandler $uncachedResponseQueryHandler,
         StoreCacheResponseCommandHandler $storeResponseCommandHandler,
+        StoreCacheRequestCommandHandler $storeRequestCommandHandler,
         UpdateCacheLastHitCommandHandler $lastHitCommandHandler,
         GzipDecoder $gzipDecoder
     ){
         $this->cachedResponseQueryHandler = $cachedResponseQueryHandler;
         $this->uncachedResponseQueryHandler = $uncachedResponseQueryHandler;
         $this->storeResponseCommandHandler = $storeResponseCommandHandler;
+        $this->storeRequestCommandHandler = $storeRequestCommandHandler;
         $this->lastHitCommandHandler = $lastHitCommandHandler;
         $this->gzipDecoder = $gzipDecoder;
     }
 
     public function index(Request $request): Response
     {
-        // Todo, add refresh job for 503 uncached responses.
         // Todo, optionally decouple cached response entity and dto.
 
         $requestBody = $this->gzipDecoder->decode($request->getContent());
@@ -76,6 +82,7 @@ class ProxyController
 
         $uncachedResponse = $this->uncachedResponseQueryHandler->handle(new FindUncachedResponseQuery($requestBody));
         if ($uncachedResponse === null) {
+            $this->storeRequestCommandHandler->handle(new StoreCacheRequestCommand($requestBody));
             return new JsonResponse(['error' => 'Registry error'], 503);
         }
 
