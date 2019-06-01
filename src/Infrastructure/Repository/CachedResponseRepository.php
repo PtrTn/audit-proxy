@@ -43,7 +43,7 @@ class CachedResponseRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('cr')
             ->where('cr.updatedAt < :threshold')
-            ->setParameter('threshold', new DateTimeImmutable('-5 minutes'), Type::DATETIME)
+            ->setParameter('threshold', new DateTimeImmutable('-1 hour'), Type::DATETIME)
             ->orderBy('cr.updatedAt', 'DESC')
             ->setMaxResults(5)
             ->getQuery()
