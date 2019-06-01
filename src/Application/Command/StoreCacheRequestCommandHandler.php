@@ -16,30 +16,34 @@ class StoreCacheRequestCommandHandler
     /**
      * @var UncachedResponseRepository
      */
-    private $unresponseRepository;
+    private $responseRepository;
 
     /**
      * @var UncachedResponseFactory
      */
-    private $uncachedResponseFactory;
+    private $responseFactory;
 
     public function __construct(
         RequestHashFactory $requestHashFactory,
         UncachedResponseRepository $responseRepository,
-        UncachedResponseFactory $cachedResponseFactory
+        UncachedResponseFactory $responseFactory
     ) {
         $this->requestHashFactory = $requestHashFactory;
-        $this->unresponseRepository = $responseRepository;
-        $this->uncachedResponseFactory = $cachedResponseFactory;
+        $this->responseRepository = $responseRepository;
+        $this->responseFactory = $responseFactory;
     }
 
     public function handle(StoreCacheRequestCommand $command): void
     {
         $hash = $this->requestHashFactory->createFromRequest($command->getRequestBody());
-        $cachedResponse = $this->uncachedResponseFactory->createFromResponse(
+        if ($this->responseRepository->hasRequestWithHash($hash)) {
+            return;
+        }
+
+        $cachedResponse = $this->responseFactory->createFromResponse(
             $hash,
             $command->getRequestBody()
         );
-        $this->unresponseRepository->save($cachedResponse);
+        $this->responseRepository->save($cachedResponse);
     }
 }

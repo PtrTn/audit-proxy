@@ -62,8 +62,8 @@ class UncachedResponse
         return $this;
     }
 
-    public function getId(): int
+    public function getRequestBody(): string
     {
-        return $this->id;
+        return $this->requestBody;
     }
 }

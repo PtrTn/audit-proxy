@@ -6,6 +6,7 @@ use App\Infrastructure\Entity\UncachedResponse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -30,7 +31,20 @@ class UncachedResponseRepository extends ServiceEntityRepository
         $this->logger = $logger;
     }
 
-    public function save(UncachedResponse $uncachedResponse) {
+    /**
+     * @return UncachedResponse[]
+     * @throws Exception
+     */
+    public function findMostRecent(): array
+    {
+        return $this->createQueryBuilder('cr')
+            ->orderBy('cr.createdAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function save(UncachedResponse $uncachedResponse): void {
         try {
             $this->getEntityManager()->persist($uncachedResponse);
             $this->getEntityManager()->flush();
@@ -41,7 +55,7 @@ class UncachedResponseRepository extends ServiceEntityRepository
         }
     }
 
-    public function delete(UncachedResponse $uncachedResponse) {
+    public function delete(UncachedResponse $uncachedResponse): void {
         try {
             $this->getEntityManager()->remove($uncachedResponse);
             $this->getEntityManager()->flush();
@@ -49,6 +63,19 @@ class UncachedResponseRepository extends ServiceEntityRepository
             $this->logger->error('Unable to delete record from database', [
                 'record' => $uncachedResponse
             ]);
+        }
+    }
+
+    public function hasRequestWithHash(string $hash): bool
+    {
+        return $this->count(['requestHash' => $hash]) > 0;
+    }
+
+    public function deleteForHash(string $hash): void
+    {
+        $uncachedResponses = $this->findBy(['requestHash' => $hash]);
+        foreach ($uncachedResponses as $uncachedResponse) {
+            $this->delete($uncachedResponse);
         }
     }
 }
