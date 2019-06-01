@@ -2,7 +2,6 @@
 
 namespace App\Application\Command;
 
-use App\Application\Query\FindUncachedResponseQueryHandler;
 use App\Infrastructure\Repository\CachedResponseRepository;
 
 class CleanupCacheCommandHandler
@@ -12,17 +11,8 @@ class CleanupCacheCommandHandler
      */
     private $repository;
 
-    /**
-     * @var FindUncachedResponseQueryHandler
-     */
-    private $queryHandler;
-
-    public function __construct(
-        CachedResponseRepository $repository,
-        FindUncachedResponseQueryHandler $queryHandler
-    ) {
+    public function __construct(CachedResponseRepository $repository) {
         $this->repository = $repository;
-        $this->queryHandler = $queryHandler;
     }
 
     public function handle(CleanupCacheCommand $command): void

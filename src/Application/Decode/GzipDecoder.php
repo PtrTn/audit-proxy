@@ -10,7 +10,7 @@ class GzipDecoder
             return $possibleGzipString;
         }
 
-        $decompressed = gzdecode($possibleGzipString);
+        $decompressed = @gzdecode($possibleGzipString);
         if ($decompressed !== false) {
             return $decompressed;
         }
