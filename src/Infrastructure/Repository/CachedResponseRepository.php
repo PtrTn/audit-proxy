@@ -32,6 +32,11 @@ class CachedResponseRepository extends ServiceEntityRepository
         $this->logger = $logger;
     }
 
+    public function findMostOutdated()
+    {
+        return $this->findBy([], ['updatedAt' => 'desc'], 5);
+    }
+
     public function findByRequestHash(RequestHash $hash): ?CachedResponse
     {
         try {

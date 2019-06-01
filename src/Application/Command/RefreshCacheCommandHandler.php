@@ -9,7 +9,6 @@ use DateTimeImmutable;
 
 class RefreshCacheCommandHandler
 {
-
     /**
      * @var CachedResponseRepository
      */
@@ -30,7 +29,7 @@ class RefreshCacheCommandHandler
 
     public function handle(RefreshCacheCommand $command): void
     {
-        $cachedResponses = $this->repository->findAll();
+        $cachedResponses = $this->repository->findMostOutdated();
         foreach ($cachedResponses as $cachedResponse) {
             $response = $this->queryHandler->handle(new FindUncachedResponseQuery($cachedResponse->getRequestBody()));
             if ($response === null) {
