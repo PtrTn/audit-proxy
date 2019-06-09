@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Mapper;
+namespace App\Application\Factory;
 
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
 
-class RequestMapper
+class GuzzleRequestFactory
 {
     /**
      * @var string
@@ -16,7 +16,7 @@ class RequestMapper
         $this->registryUrl = $registryUrl;
     }
 
-    public function httpToGuzzle(string $requestBody): GuzzleRequest
+    public function fromRequestBody(string $requestBody): GuzzleRequest
     {
         return new GuzzleRequest(
             'POST',

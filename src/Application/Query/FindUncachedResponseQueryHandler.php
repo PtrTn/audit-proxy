@@ -3,9 +3,8 @@
 namespace App\Application\Query;
 
 use App\Application\Dto\UncachedResponse;
-use App\Application\Query\FindUncachedResponseQuery;
+use App\Application\Factory\GuzzleRequestFactory;
 use App\Application\Factory\UncachedResponseFactory;
-use App\Application\Mapper\RequestMapper;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
@@ -14,7 +13,7 @@ class FindUncachedResponseQueryHandler
 {
 
     /**
-     * @var RequestMapper
+     * @var GuzzleRequestFactory
      */
     private $requestMapper;
 
@@ -34,7 +33,7 @@ class FindUncachedResponseQueryHandler
     private $logger;
 
     public function __construct(
-        RequestMapper $requestMapper,
+        GuzzleRequestFactory $requestMapper,
         GuzzleClient $client,
         UncachedResponseFactory $uncachedResponseFactory,
         LoggerInterface $logger
@@ -47,7 +46,7 @@ class FindUncachedResponseQueryHandler
 
     public function handle(FindUncachedResponseQuery $query): ?UncachedResponse
     {
-        $guzzleRequest = $this->requestMapper->httpToGuzzle($query->getRequestBody());
+        $guzzleRequest = $this->requestMapper->fromRequestBody($query->getRequestBody());
         try {
             $response = $this->client->send($guzzleRequest, ['timeout' => 10]);
             return $this->uncachedResponseFactory->createFromResponse($response);

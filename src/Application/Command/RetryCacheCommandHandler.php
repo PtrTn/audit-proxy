@@ -37,11 +37,15 @@ class RetryCacheCommandHandler
     {
         $uncachedResponses = $this->repository->findMostRecent();
         foreach ($uncachedResponses as $uncachedResponse) {
-            $response = $this->queryHandler->handle(new FindUncachedResponseQuery($uncachedResponse->getRequestBody()));
+            $response = $this->queryHandler->handle(
+                new FindUncachedResponseQuery($uncachedResponse->getRequestBody())
+            );
             if ($response === null) {
                 continue;
             }
-            $this->storeResponseCommandHandler->handle(new StoreCacheResponseCommand($uncachedResponse->getRequestBody(), $response));
+            $this->storeResponseCommandHandler->handle(
+                new StoreCacheResponseCommand($uncachedResponse->getRequestBody(), $response)
+            );
         }
     }
 }
