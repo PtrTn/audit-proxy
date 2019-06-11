@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RetryCacheCliCommand extends Command
 {
+    public const NAME = 'app:cache:retry';
+
     /**
      * @var RetryCacheCommandHandler
      */
@@ -24,7 +26,7 @@ class RetryCacheCliCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:cache:retry')
+            ->setName(self::NAME)
             ->setDescription('Retry to cache previously failed audits')
             ->setHelp('This command will attempt to create cache for audit requests which previously failed');
     }
