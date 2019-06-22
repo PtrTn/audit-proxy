@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command;
 
 use App\Infrastructure\Repository\CachedResponseRepository;
@@ -7,14 +9,10 @@ use Psr\Log\LoggerInterface;
 
 class UpdateCacheLastHitCommandHandler
 {
-    /**
-     * @var CachedResponseRepository
-     */
+    /** @var CachedResponseRepository */
     private $responseRepository;
 
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
@@ -22,10 +20,10 @@ class UpdateCacheLastHitCommandHandler
         LoggerInterface $logger
     ) {
         $this->responseRepository = $responseRepository;
-        $this->logger = $logger;
+        $this->logger             = $logger;
     }
 
-    public function handle(UpdateCacheLastHitCommand $command): void
+    public function handle(UpdateCacheLastHitCommand $command) : void
     {
         $cachedResponse = $this->responseRepository->findOneBy(['id' => $command->getId()]);
         if ($cachedResponse === null) {
@@ -34,7 +32,8 @@ class UpdateCacheLastHitCommandHandler
                 [
                     'id'             => $command->getId(),
                     'lastCacheHitAt' => $command->getDateTime()->format('Y-m-d H:i'),
-                ]);
+                ]
+            );
 
             return;
         }

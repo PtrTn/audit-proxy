@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Command;
 
 use App\Application\Command\RefreshCacheCommand;
@@ -12,9 +14,7 @@ class RefreshCacheCliCommand extends Command
 {
     public const NAME = 'app:cache:refresh';
 
-    /**
-     * @var RefreshCacheCommandHandler
-     */
+    /** @var RefreshCacheCommandHandler */
     private $commandHandler;
 
     public function __construct(RefreshCacheCommandHandler $commandHandler)
@@ -23,7 +23,7 @@ class RefreshCacheCliCommand extends Command
         $this->commandHandler = $commandHandler;
     }
 
-    protected function configure()
+    protected function configure() : void
     {
         $this
             ->setName(self::NAME)
@@ -31,10 +31,12 @@ class RefreshCacheCliCommand extends Command
             ->setHelp('This command will retrieve fresh audit data for each cached item');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $output->writeln('Starting cache refresh');
         $this->commandHandler->handle(new RefreshCacheCommand());
         $output->writeln('Done refreshing cache');
+
+        return 0;
     }
 }

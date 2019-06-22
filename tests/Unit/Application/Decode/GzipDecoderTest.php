@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Decode;
 
 use App\Application\Decode\GzipDecoder;
-use App\Tests\Helpers\FixtureAwareTrait;
+use App\Tests\Helpers\FixtureAware;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use function implode;
+use function json_decode;
 
 class GzipDecoderTest extends TestCase
 {
-    use FixtureAwareTrait;
+    use FixtureAware;
 
-    /**
-     * @var GzipDecoder
-     */
+    /** @var GzipDecoder */
     private $decoder;
 
-    public function setUp(): void
+    public function setUp() : void
     {
         $this->decoder = new GzipDecoder();
     }
@@ -24,13 +26,11 @@ class GzipDecoderTest extends TestCase
     /**
      * @test
      * @dataProvider requestData
-     *
-     * @param string $request
      */
-    public function shouldDecodeIfGzipped(string $request): void
+    public function shouldDecodeIfGzipped(string $request) : void
     {
         $decoded = $this->decoder->decode($request);
-        $json = json_decode($decoded, true);
+        $json    = json_decode($decoded, true);
 
         $this->assertArrayHasKey('requires', $json);
         $this->assertArrayHasKey('dependencies', $json);
@@ -42,10 +42,10 @@ class GzipDecoderTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotDecodeIfNotGzipped(): void
+    public function shouldNotDecodeIfNotGzipped() : void
     {
         $possibleGzipString = 'non-gzipped-string';
-        $decoded = $this->decoder->decode($possibleGzipString);
+        $decoded            = $this->decoder->decode($possibleGzipString);
 
         $this->assertEquals($possibleGzipString, $decoded);
     }
@@ -53,17 +53,21 @@ class GzipDecoderTest extends TestCase
     /**
      * @test
      */
-    public function shouldErrorOnInvalidGzipString(): void
+    public function shouldErrorOnInvalidGzipString() : void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not decode gzipped request contents');
 
-        $invalidGzipString = "\x1f" . "\x8b" . "\x08" . 'and-some-invalid-part';
+        $gzipStartingBytes = implode('', ["\x1f", "\x8b", "\x08"]);
+        $invalidGzipString = $gzipStartingBytes . 'and-some-invalid-part';
 
         $this->decoder->decode($invalidGzipString);
     }
 
-    public function requestData(): array
+    /**
+     * @return string[][]
+     */
+    public function requestData() : array
     {
         return [
             'gzipped yarn request body' => [$this->getContentsFromFile('request-body-yarn.gz')],

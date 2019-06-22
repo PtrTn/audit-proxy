@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Query;
 
 use App\Application\Factory\RequestHashFactory;
@@ -15,7 +17,7 @@ class FindCachedResponseQueryHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnNullfNoCache()
+    public function shouldReturnNullfNoCache() : void
     {
         $hashFactory = $this->createMock(RequestHashFactory::class);
         $hashFactory->method('createFromRequest')->willReturn(new RequestHash('some-hash'));
@@ -23,7 +25,7 @@ class FindCachedResponseQueryHandlerTest extends TestCase
         $repository = $this->createMock(CachedResponseRepository::class);
         $repository->method('findByRequestHash')->willReturn(null);
 
-        $query = new FindCachedResponseQuery('some-request-body');
+        $query   = new FindCachedResponseQuery('some-request-body');
         $handler = new FindCachedResponseQueryHandler($hashFactory, $repository);
 
         $response = $handler->handle($query);
@@ -34,7 +36,7 @@ class FindCachedResponseQueryHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnNullfInvalidCache()
+    public function shouldReturnNullfInvalidCache() : void
     {
         $hashFactory = $this->createMock(RequestHashFactory::class);
         $hashFactory->method('createFromRequest')->willReturn(new RequestHash('some-hash'));
@@ -45,7 +47,7 @@ class FindCachedResponseQueryHandlerTest extends TestCase
         $repository = $this->createMock(CachedResponseRepository::class);
         $repository->method('findByRequestHash')->willReturn($invalidResponse);
 
-        $query = new FindCachedResponseQuery('some-request-body');
+        $query   = new FindCachedResponseQuery('some-request-body');
         $handler = new FindCachedResponseQueryHandler($hashFactory, $repository);
 
         $response = $handler->handle($query);
@@ -56,7 +58,7 @@ class FindCachedResponseQueryHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnValidCache()
+    public function shouldReturnValidCache() : void
     {
         $hashFactory = $this->createMock(RequestHashFactory::class);
         $hashFactory->method('createFromRequest')->willReturn(new RequestHash('some-hash'));
@@ -67,7 +69,7 @@ class FindCachedResponseQueryHandlerTest extends TestCase
         $repository = $this->createMock(CachedResponseRepository::class);
         $repository->method('findByRequestHash')->willReturn($validResponse);
 
-        $query = new FindCachedResponseQuery('some-request-body');
+        $query   = new FindCachedResponseQuery('some-request-body');
         $handler = new FindCachedResponseQueryHandler($hashFactory, $repository);
 
         $response = $handler->handle($query);

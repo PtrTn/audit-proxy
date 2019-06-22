@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Query;
 
 use App\Application\Dto\UncachedResponse;
@@ -11,25 +13,16 @@ use Psr\Log\LoggerInterface;
 
 class FindUncachedResponseQueryHandler
 {
-
-    /**
-     * @var GuzzleRequestFactory
-     */
+    /** @var GuzzleRequestFactory */
     private $requestMapper;
 
-    /**
-     * @var GuzzleClient
-     */
+    /** @var GuzzleClient */
     private $client;
 
-    /**
-     * @var UncachedResponseFactory
-     */
+    /** @var UncachedResponseFactory */
     private $uncachedResponseFactory;
 
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
@@ -38,25 +31,27 @@ class FindUncachedResponseQueryHandler
         UncachedResponseFactory $uncachedResponseFactory,
         LoggerInterface $logger
     ) {
-        $this->requestMapper = $requestMapper;
-        $this->client = $client;
+        $this->requestMapper           = $requestMapper;
+        $this->client                  = $client;
         $this->uncachedResponseFactory = $uncachedResponseFactory;
-        $this->logger = $logger;
+        $this->logger                  = $logger;
     }
 
-    public function handle(FindUncachedResponseQuery $query): ?UncachedResponse
+    public function handle(FindUncachedResponseQuery $query) : ?UncachedResponse
     {
         $guzzleRequest = $this->requestMapper->fromRequestBody($query->getRequestBody());
         try {
             $response = $this->client->send($guzzleRequest, ['timeout' => 10]);
+
             return $this->uncachedResponseFactory->createFromResponse($response);
         } catch (GuzzleException $e) {
             if ($e->getCode() !== 503) {
                 $this->logger->warning('Error retrieving uncached response: "{error}"', [
                     'error' => $e->getMessage(),
-                    'trace' => $e->getTrace()
+                    'trace' => $e->getTrace(),
                 ]);
             }
+
             return null;
         }
     }

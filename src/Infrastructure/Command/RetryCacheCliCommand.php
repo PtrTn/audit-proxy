@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Command;
 
 use App\Application\Command\RetryCacheCommand;
@@ -12,9 +14,7 @@ class RetryCacheCliCommand extends Command
 {
     public const NAME = 'app:cache:retry';
 
-    /**
-     * @var RetryCacheCommandHandler
-     */
+    /** @var RetryCacheCommandHandler */
     private $commandHandler;
 
     public function __construct(RetryCacheCommandHandler $commandHandler)
@@ -23,7 +23,7 @@ class RetryCacheCliCommand extends Command
         $this->commandHandler = $commandHandler;
     }
 
-    protected function configure()
+    protected function configure() : void
     {
         $this
             ->setName(self::NAME)
@@ -31,10 +31,12 @@ class RetryCacheCliCommand extends Command
             ->setHelp('This command will attempt to create cache for audit requests which previously failed');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $output->writeln('Starting cache retry');
         $this->commandHandler->handle(new RetryCacheCommand());
         $output->writeln('Done retrying cache');
+
+        return 0;
     }
 }

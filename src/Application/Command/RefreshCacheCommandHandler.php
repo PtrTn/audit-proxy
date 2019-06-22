@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command;
 
 use App\Application\Query\FindUncachedResponseQuery;
@@ -9,25 +11,21 @@ use DateTimeImmutable;
 
 class RefreshCacheCommandHandler
 {
-    /**
-     * @var CachedResponseRepository
-     */
+    /** @var CachedResponseRepository */
     private $repository;
 
-    /**
-     * @var FindUncachedResponseQueryHandler
-     */
+    /** @var FindUncachedResponseQueryHandler */
     private $queryHandler;
 
     public function __construct(
         CachedResponseRepository $repository,
         FindUncachedResponseQueryHandler $queryHandler
     ) {
-        $this->repository = $repository;
+        $this->repository   = $repository;
         $this->queryHandler = $queryHandler;
     }
 
-    public function handle(RefreshCacheCommand $command): void
+    public function handle(RefreshCacheCommand $command) : void
     {
         $cachedResponses = $this->repository->findMostOutdated();
         foreach ($cachedResponses as $cachedResponse) {

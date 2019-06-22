@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Command;
 
 use App\Application\Command\CleanupCacheCommand;
@@ -13,7 +15,7 @@ class CleanupCacheCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldCleanupUnusedCache()
+    public function shouldCleanupUnusedCache() : void
     {
         $response = $this->createMock(CachedResponse::class);
 
@@ -30,7 +32,7 @@ class CleanupCacheCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotCleanupCacheIfNoUnused()
+    public function shouldNotCleanupCacheIfNoUnused() : void
     {
         $repository = $this->createMock(CachedResponseRepository::class);
         $repository->method('findUnused')->willReturn([]);

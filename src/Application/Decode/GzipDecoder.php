@@ -1,12 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Decode;
+
+use RuntimeException;
+use function gzdecode;
+use function implode;
+use function mb_strpos;
 
 class GzipDecoder
 {
-    public function decode(string $possibleGzipString)
+    public function decode(string $possibleGzipString) : string
     {
-        if (!$this->isGzipped($possibleGzipString)) {
+        if (! $this->isGzipped($possibleGzipString)) {
             return $possibleGzipString;
         }
 
@@ -15,12 +22,13 @@ class GzipDecoder
             return $decompressed;
         }
 
-        throw new \RuntimeException('Could not decode gzipped request contents');
+        throw new RuntimeException('Could not decode gzipped request contents');
     }
 
-    private function isGzipped(string $possibleGzipString): bool
+    private function isGzipped(string $possibleGzipString) : bool
     {
-        return mb_strpos($possibleGzipString , "\x1f" . "\x8b" . "\x08") === 0;
-    }
+        $gzipStartingBytes = implode('', ["\x1f", "\x8b", "\x08"]);
 
+        return mb_strpos($possibleGzipString, $gzipStartingBytes) === 0;
+    }
 }

@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Factory;
 
 use App\Application\Factory\RequestHashFactory;
 use App\Domain\ValueObject\RequestHash;
 use PHPUnit\Framework\TestCase;
+use function md5;
 
 class RequestHashFactoryTest extends TestCase
 {
-    /**
-     * @var RequestHashFactory
-     */
+    /** @var RequestHashFactory */
     private $factory;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->factory = new RequestHashFactory();
     }
@@ -21,7 +22,7 @@ class RequestHashFactoryTest extends TestCase
     /**
      * @test
      */
-    public function shouldCreateRequestHash()
+    public function shouldCreateRequestHash() : void
     {
         $requestBody = 'request-string';
         $requestHash = $this->factory->createFromRequest($requestBody);

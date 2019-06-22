@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Controller;
 
 use App\Application\Command\StoreCacheRequestCommand;
@@ -20,34 +22,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProxyController
 {
-    /**
-     * @var FindCachedResponseQueryHandler
-     */
+    /** @var FindCachedResponseQueryHandler */
     private $cachedResponseQueryHandler;
 
-    /**
-     * @var FindUncachedResponseQueryHandler
-     */
+    /** @var FindUncachedResponseQueryHandler */
     private $uncachedResponseQueryHandler;
 
-    /**
-     * @var StoreCacheResponseCommandHandler
-     */
+    /** @var StoreCacheResponseCommandHandler */
     private $storeResponseCommandHandler;
 
-    /**
-     * @var StoreCacheRequestCommandHandler
-     */
+    /** @var StoreCacheRequestCommandHandler */
     private $storeRequestCommandHandler;
 
-    /**
-     * @var UpdateCacheLastHitCommandHandler
-     */
+    /** @var UpdateCacheLastHitCommandHandler */
     private $lastHitCommandHandler;
 
-    /**
-     * @var GzipDecoder
-     */
+    /** @var GzipDecoder */
     private $gzipDecoder;
 
     public function __construct(
@@ -57,32 +47,34 @@ class ProxyController
         StoreCacheRequestCommandHandler $storeRequestCommandHandler,
         UpdateCacheLastHitCommandHandler $lastHitCommandHandler,
         GzipDecoder $gzipDecoder
-    ){
-        $this->cachedResponseQueryHandler = $cachedResponseQueryHandler;
+    ) {
+        $this->cachedResponseQueryHandler   = $cachedResponseQueryHandler;
         $this->uncachedResponseQueryHandler = $uncachedResponseQueryHandler;
-        $this->storeResponseCommandHandler = $storeResponseCommandHandler;
-        $this->storeRequestCommandHandler = $storeRequestCommandHandler;
-        $this->lastHitCommandHandler = $lastHitCommandHandler;
-        $this->gzipDecoder = $gzipDecoder;
+        $this->storeResponseCommandHandler  = $storeResponseCommandHandler;
+        $this->storeRequestCommandHandler   = $storeRequestCommandHandler;
+        $this->lastHitCommandHandler        = $lastHitCommandHandler;
+        $this->gzipDecoder                  = $gzipDecoder;
     }
 
-    public function index(Request $request): Response
+    public function index(Request $request) : Response
     {
         // Todo, optionally decouple cached response entity and dto.
 
-        $requestBody = $this->gzipDecoder->decode((string) $request->getContent());
+        $requestBody    = $this->gzipDecoder->decode((string) $request->getContent());
         $cachedResponse = $this->cachedResponseQueryHandler->handle(new FindCachedResponseQuery($requestBody));
         if ($cachedResponse !== null) {
             $this->lastHitCommandHandler->handle(new UpdateCacheLastHitCommand(
                 $cachedResponse->getId(),
-                new DateTimeImmutable())
-            );
+                new DateTimeImmutable()
+            ));
+
             return $cachedResponse->toSymfonyResponse();
         }
 
         $uncachedResponse = $this->uncachedResponseQueryHandler->handle(new FindUncachedResponseQuery($requestBody));
         if ($uncachedResponse === null) {
             $this->storeRequestCommandHandler->handle(new StoreCacheRequestCommand($requestBody));
+
             return new JsonResponse(['error' => 'Registry error'], 503);
         }
 

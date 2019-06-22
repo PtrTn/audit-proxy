@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\ValueObject;
 
 class RequestHash
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $hash;
 
     public function __construct(string $hash)
@@ -14,12 +14,12 @@ class RequestHash
         $this->hash = $hash;
     }
 
-    public function equals(self $hash): bool
+    public function equals(self $hash) : bool
     {
         return $hash->__toString() === $this->__toString();
     }
 
-    public function __toString(): string
+    public function __toString() : string
     {
         return $this->hash;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Factory;
 
 use App\Application\Dto\UncachedResponse;
@@ -9,12 +11,10 @@ use PHPUnit\Framework\TestCase;
 
 class UncachedResponseFactoryTest extends TestCase
 {
-    /**
-     * @var UncachedResponseFactory
-     */
+    /** @var UncachedResponseFactory */
     private $factory;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->factory = new UncachedResponseFactory();
     }
@@ -22,10 +22,10 @@ class UncachedResponseFactoryTest extends TestCase
     /**
      * @test
      */
-    public function shouldCreateFromResponse()
+    public function shouldCreateFromResponse() : void
     {
-        $requestBody = 'request-string';
-        $response = new Response(200, [], $requestBody);
+        $requestBody      = 'request-string';
+        $response         = new Response(200, [], $requestBody);
         $uncachedResponse = $this->factory->createFromResponse($response);
 
         $this->assertInstanceOf(UncachedResponse::class, $uncachedResponse);

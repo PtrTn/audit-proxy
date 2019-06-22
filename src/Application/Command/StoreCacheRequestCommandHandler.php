@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command;
 
 use App\Application\Factory\RequestHashFactory;
@@ -8,19 +10,13 @@ use App\Infrastructure\Repository\UncachedResponseRepository;
 
 class StoreCacheRequestCommandHandler
 {
-    /**
-     * @var RequestHashFactory
-     */
+    /** @var RequestHashFactory */
     private $requestHashFactory;
 
-    /**
-     * @var UncachedResponseRepository
-     */
+    /** @var UncachedResponseRepository */
     private $responseRepository;
 
-    /**
-     * @var UncachedResponseFactory
-     */
+    /** @var UncachedResponseFactory */
     private $responseFactory;
 
     public function __construct(
@@ -30,10 +26,10 @@ class StoreCacheRequestCommandHandler
     ) {
         $this->requestHashFactory = $requestHashFactory;
         $this->responseRepository = $responseRepository;
-        $this->responseFactory = $responseFactory;
+        $this->responseFactory    = $responseFactory;
     }
 
-    public function handle(StoreCacheRequestCommand $command): void
+    public function handle(StoreCacheRequestCommand $command) : void
     {
         $hash = $this->requestHashFactory->createFromRequest($command->getRequestBody());
         if ($this->responseRepository->hasRequestWithHash($hash)) {

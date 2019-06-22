@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Command;
 
 use App\Application\Command\RefreshCacheCommand;
@@ -15,7 +17,7 @@ class RefreshCacheCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldRefreshOutdatedCache()
+    public function shouldRefreshOutdatedCache() : void
     {
         $response = $this->createMock(CachedResponse::class);
 
@@ -37,7 +39,7 @@ class RefreshCacheCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotUpdateCacheIfNoResponse()
+    public function shouldNotUpdateCacheIfNoResponse() : void
     {
         $response = $this->createMock(CachedResponse::class);
 
@@ -57,7 +59,7 @@ class RefreshCacheCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotRefreshIfNoOutdatedCache()
+    public function shouldNotRefreshIfNoOutdatedCache() : void
     {
         $response = $this->createMock(CachedResponse::class);
 

@@ -1,41 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Query;
 
-use App\Infrastructure\Entity\CachedResponse;
 use App\Application\Factory\RequestHashFactory;
+use App\Infrastructure\Entity\CachedResponse;
 use App\Infrastructure\Repository\CachedResponseRepository;
 
 class FindCachedResponseQueryHandler
 {
-    /**
-     * @var RequestHashFactory
-     */
+    /** @var RequestHashFactory */
     private $hashService;
 
-    /**
-     * @var CachedResponseRepository
-     */
+    /** @var CachedResponseRepository */
     private $responseRepository;
 
     public function __construct(
         RequestHashFactory $hashService,
         CachedResponseRepository $responseRepository
-    ){
-        $this->hashService = $hashService;
+    ) {
+        $this->hashService        = $hashService;
         $this->responseRepository = $responseRepository;
     }
 
-    public function handle(FindCachedResponseQuery $query): ?CachedResponse
+    public function handle(FindCachedResponseQuery $query) : ?CachedResponse
     {
-        $hash = $this->hashService->createFromRequest($query->getRequestBody());
+        $hash     = $this->hashService->createFromRequest($query->getRequestBody());
         $response = $this->responseRepository->findByRequestHash($hash);
 
         if ($response === null) {
             return null;
         }
 
-        if (!$response->isValid()) {
+        if (! $response->isValid()) {
             return null;
         }
 

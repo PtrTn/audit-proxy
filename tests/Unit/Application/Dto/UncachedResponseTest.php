@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Dto;
 
 use App\Application\Dto\UncachedResponse;
@@ -11,10 +13,10 @@ class UncachedResponseTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeConvertableToSymfonyResponse()
+    public function shouldBeConvertableToSymfonyResponse() : void
     {
-        $body = 'response-string';
-        $dto = new UncachedResponse($body);
+        $body     = 'response-string';
+        $dto      = new UncachedResponse($body);
         $response = $dto->toSymfonyResponse();
 
         $this->assertInstanceOf(Response::class, $response);

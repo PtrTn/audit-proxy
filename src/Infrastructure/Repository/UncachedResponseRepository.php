@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Repository;
 
+use App\Domain\ValueObject\RequestHash;
 use App\Infrastructure\Entity\UncachedResponse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\ORMException;
@@ -18,9 +21,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UncachedResponseRepository extends ServiceEntityRepository
 {
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
@@ -33,9 +34,10 @@ class UncachedResponseRepository extends ServiceEntityRepository
 
     /**
      * @return UncachedResponse[]
+     *
      * @throws Exception
      */
-    public function findMostRecent(): array
+    public function findMostRecent() : array
     {
         return $this->createQueryBuilder('cr')
             ->orderBy('cr.createdAt', 'DESC')
@@ -44,36 +46,34 @@ class UncachedResponseRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function save(UncachedResponse $uncachedResponse): void {
+    public function save(UncachedResponse $uncachedResponse) : void
+    {
         try {
             $this->getEntityManager()->persist($uncachedResponse);
             $this->getEntityManager()->flush();
         } catch (ORMInvalidArgumentException | ORMException $e) {
-            $this->logger->error('Unable to save record to database', [
-                'record' => $uncachedResponse
-            ]);
+            $this->logger->error('Unable to save record to database', ['record' => $uncachedResponse]);
         }
     }
 
-    public function delete(UncachedResponse $uncachedResponse): void {
+    public function delete(UncachedResponse $uncachedResponse) : void
+    {
         try {
             $this->getEntityManager()->remove($uncachedResponse);
             $this->getEntityManager()->flush();
         } catch (ORMInvalidArgumentException | ORMException $e) {
-            $this->logger->error('Unable to delete record from database', [
-                'record' => $uncachedResponse
-            ]);
+            $this->logger->error('Unable to delete record from database', ['record' => $uncachedResponse]);
         }
     }
 
-    public function hasRequestWithHash(string $hash): bool
+    public function hasRequestWithHash(RequestHash $hash) : bool
     {
-        return $this->count(['requestHash' => $hash]) > 0;
+        return $this->count(['requestHash' => (string) $hash]) > 0;
     }
 
-    public function deleteForHash(string $hash): void
+    public function deleteForHash(RequestHash $hash) : void
     {
-        $uncachedResponses = $this->findBy(['requestHash' => $hash]);
+        $uncachedResponses = $this->findBy(['requestHash' => (string) $hash]);
         foreach ($uncachedResponses as $uncachedResponse) {
             $this->delete($uncachedResponse);
         }

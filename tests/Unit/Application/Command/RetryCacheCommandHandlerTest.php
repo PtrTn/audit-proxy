@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Command;
 
 use App\Application\Command\RetryCacheCommand;
@@ -16,7 +18,7 @@ class RetryCacheCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldRetryIfUncached(): void
+    public function shouldRetryIfUncached() : void
     {
         $response = $this->createMock(UncachedResponseEntity::class);
         $response->method('getRequestBody')->willReturn('some-request-body');
@@ -25,7 +27,7 @@ class RetryCacheCommandHandlerTest extends TestCase
         $repository->method('findMostRecent')->willReturn([$response]);
 
         $uncachedResponse = $this->createMock(UncachedResponseDto::class);
-        $queryHandler = $this->createMock(FindUncachedResponseQueryHandler::class);
+        $queryHandler     = $this->createMock(FindUncachedResponseQueryHandler::class);
         $queryHandler->method('handle')->willReturn($uncachedResponse);
 
         $storeResponseCommandHandler = $this->createMock(StoreCacheResponseCommandHandler::class);
@@ -44,7 +46,7 @@ class RetryCacheCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotStoreIfNoResponse(): void
+    public function shouldNotStoreIfNoResponse() : void
     {
         $response = $this->createMock(UncachedResponseEntity::class);
         $response->method('getRequestBody')->willReturn('some-request-body');
@@ -71,7 +73,7 @@ class RetryCacheCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotRetryIfNoUncachedResponses(): void
+    public function shouldNotRetryIfNoUncachedResponses() : void
     {
         $repository = $this->createMock(UncachedResponseRepository::class);
         $repository->method('findMostRecent')->willReturn([]);
