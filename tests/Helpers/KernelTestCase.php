@@ -61,7 +61,9 @@ class KernelTestCase extends BaseKernelTestCase
             return;
         }
 
-        $this->entityManager = static::$container->get('doctrine.orm.entity_manager');
+        /** @var EntityManager $em */
+        $em = static::$container->get('doctrine.orm.entity_manager');
+        $this->entityManager = $em;
         $this->createEmptyDatabase();
 
         $this->databaseInitialized = true;
