@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional;
 
+use App\Tests\Helpers\FixtureAwareTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
@@ -9,13 +10,14 @@ use PHPUnit\Framework\TestCase;
 
 class NpmProxyAuditRequestTest extends TestCase
 {
+    use FixtureAwareTrait;
 
     /**
      * @var Client
      */
     private $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = new Client();
     }
@@ -25,8 +27,8 @@ class NpmProxyAuditRequestTest extends TestCase
         $request = new Request(
             'POST',
             new Uri('http://audit-proxy.test/-/npm/v1/security/audits'),
-            json_decode(file_get_contents(__DIR__ . '/../fixtures/headers-npm.json'), true),
-            fopen(__DIR__ . '/../fixtures/request-body-npm.gz', 'r')
+            $this->getContentsFromJson('headers-npm.json'),
+            $this->getFixtureResource('request-body-npm.gz')
         );
         $response = $this->client->send($request);
 

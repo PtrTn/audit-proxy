@@ -3,17 +3,20 @@
 namespace Unit\Application\Decode;
 
 use App\Application\Decode\GzipDecoder;
+use App\Tests\Helpers\FixtureAwareTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 class GzipDecoderTest extends TestCase
 {
+    use FixtureAwareTrait;
+
     /**
      * @var GzipDecoder
      */
     private $decoder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->decoder = new GzipDecoder();
     }
@@ -24,7 +27,7 @@ class GzipDecoderTest extends TestCase
      *
      * @param string $request
      */
-    public function shouldDecodeIfGzipped(string $request)
+    public function shouldDecodeIfGzipped(string $request): void
     {
         $decoded = $this->decoder->decode($request);
         $json = json_decode($decoded, true);
@@ -39,7 +42,7 @@ class GzipDecoderTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotDecodeIfNotGzipped()
+    public function shouldNotDecodeIfNotGzipped(): void
     {
         $possibleGzipString = 'non-gzipped-string';
         $decoded = $this->decoder->decode($possibleGzipString);
@@ -50,7 +53,7 @@ class GzipDecoderTest extends TestCase
     /**
      * @test
      */
-    public function shouldErrorOnInvalidGzipString()
+    public function shouldErrorOnInvalidGzipString(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not decode gzipped request contents');
@@ -60,13 +63,13 @@ class GzipDecoderTest extends TestCase
         $this->decoder->decode($invalidGzipString);
     }
 
-    public function requestData()
+    public function requestData(): array
     {
         return [
-            'gzipped yarn request body' => [file_get_contents(__DIR__ . '/../../../fixtures/request-body-yarn.gz')],
-            'gzipped npm request body' => [file_get_contents(__DIR__ . '/../../../fixtures/request-body-npm.gz')],
-            'yarn request body' => [file_get_contents(__DIR__ . '/../../../fixtures/request-body-yarn.gz')],
-            'npm request body'  => [file_get_contents(__DIR__ . '/../../../fixtures/request-body-npm.gz')],
+            'gzipped yarn request body' => [$this->getContentsFromFile('request-body-yarn.gz')],
+            'gzipped npm request body'  => [$this->getContentsFromFile('request-body-npm.gz')],
+            'yarn request body'         => [$this->getContentsFromFile('request-body-yarn.gz')],
+            'npm request body'          => [$this->getContentsFromFile('request-body-npm.gz')],
         ];
     }
 }

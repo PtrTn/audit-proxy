@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RefreshCacheCliCommand extends Command
 {
+    public const NAME = 'app:cache:refresh';
+
     /**
      * @var RefreshCacheCommandHandler
      */
@@ -24,7 +26,7 @@ class RefreshCacheCliCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:cache:refresh')
+            ->setName(self::NAME)
             ->setDescription('Refresh cached audits')
             ->setHelp('This command will retrieve fresh audit data for each cached item');
     }
