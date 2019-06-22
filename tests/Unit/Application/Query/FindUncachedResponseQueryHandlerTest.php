@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Application\Query;
+namespace App\Tests\Unit\Application\Query;
 
 use App\Application\Dto\UncachedResponse;
 use App\Application\Factory\GuzzleRequestFactory;

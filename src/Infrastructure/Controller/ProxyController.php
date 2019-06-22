@@ -70,7 +70,7 @@ class ProxyController
     {
         // Todo, optionally decouple cached response entity and dto.
 
-        $requestBody = $this->gzipDecoder->decode($request->getContent());
+        $requestBody = $this->gzipDecoder->decode((string) $request->getContent());
         $cachedResponse = $this->cachedResponseQueryHandler->handle(new FindCachedResponseQuery($requestBody));
         if ($cachedResponse !== null) {
             $this->lastHitCommandHandler->handle(new UpdateCacheLastHitCommand(

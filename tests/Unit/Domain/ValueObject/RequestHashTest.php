@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Application\Decode;
+namespace App\Tests\Unit\Domain\ValueObject;
 
 use App\Domain\ValueObject\RequestHash;
 use PHPUnit\Framework\TestCase;
