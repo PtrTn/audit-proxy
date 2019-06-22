@@ -53,13 +53,17 @@
         ],
         "check": [
             "@test",
-            "@phpstan"
+            "@phpstan",
+            "@phpcs"
         ],
         "test": [
             "bin/phpunit"
         ],
         "phpstan": [
             "vendor/bin/phpstan analyse"
+        ],
+        "phpcs": [
+            "vendor/bin/phpcs"
         ]
     },
     "conflict": {
@@ -72,6 +76,7 @@
         }
     },
     "require-dev": {
+        "doctrine/coding-standard": "^6.0",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "easycorp/easy-deploy-bundle": "^1.0",
         "phpstan/phpstan-doctrine": "^0.11.5",
