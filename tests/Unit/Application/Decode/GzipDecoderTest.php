@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Application\Decode;
+namespace App\Tests\Unit\Application\Decode;
 
 use App\Application\Decode\GzipDecoder;
 use App\Tests\Helpers\FixtureAwareTrait;

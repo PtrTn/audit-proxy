@@ -1,6 +1,6 @@
 <?php
 
-namespace Integration\Infrastructure\Command;
+namespace App\Tests\Integration\Infrastructure\Command;
 
 use App\Infrastructure\Command\RetryCacheCliCommand;
 use App\Tests\Fixtures\Seeders\UncachedResponseSeeder;

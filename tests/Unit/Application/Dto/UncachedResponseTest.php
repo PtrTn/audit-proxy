@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Application\Dto;
+namespace App\Tests\Unit\Application\Dto;
 
 use App\Application\Dto\UncachedResponse;
 use PHPUnit\Framework\TestCase;

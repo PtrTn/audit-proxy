@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Application\Query;
+namespace App\Tests\Unit\Application\Query;
 
 use App\Application\Factory\RequestHashFactory;
 use App\Application\Query\FindCachedResponseQuery;

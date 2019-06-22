@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Application\Query;
+namespace App\Tests\Unit\Application\Command;
 
 use App\Application\Command\StoreCacheResponseCommand;
 use App\Application\Command\StoreCacheResponseCommandHandler;
