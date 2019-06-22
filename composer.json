@@ -50,6 +50,16 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "check": [
+            "@test",
+            "@phpstan"
+        ],
+        "test": [
+            "bin/phpunit"
+        ],
+        "phpstan": [
+            "vendor/bin/phpstan analyse"
         ]
     },
     "conflict": {
