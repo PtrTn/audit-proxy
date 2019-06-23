@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Factory;
 
 use App\Application\Factory\GuzzleRequestFactory;
@@ -8,28 +10,24 @@ use PHPUnit\Framework\TestCase;
 
 class GuzzleRequestFactoryTest extends TestCase
 {
-    /**
-     * @var GuzzleRequestFactory
-     */
+    /** @var GuzzleRequestFactory */
     private $factory;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $registryUrl;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->registryUrl = 'http://some-registry-url.com';
-        $this->factory = new GuzzleRequestFactory($this->registryUrl);
+        $this->factory     = new GuzzleRequestFactory($this->registryUrl);
     }
 
     /**
      * @test
      */
-    public function shouldCreateFromRequestBody()
+    public function shouldCreateFromRequestBody() : void
     {
-        $requestBody = 'request-string';
+        $requestBody   = 'request-string';
         $guzzleRequest = $this->factory->fromRequestBody($requestBody);
 
         $this->assertInstanceOf(Request::class, $guzzleRequest);
@@ -38,7 +36,8 @@ class GuzzleRequestFactoryTest extends TestCase
             $this->registryUrl,
             $guzzleRequest->getUri()->getScheme() .
             '://' .
-            $guzzleRequest->getUri()->getHost());
+            $guzzleRequest->getUri()->getHost()
+        );
         $this->assertCount(3, $guzzleRequest->getHeaders());
         $this->assertEquals('application/json', $guzzleRequest->getHeaderLine('Content-Type'));
         $this->assertEquals('application/json', $guzzleRequest->getHeaderLine('Accept'));

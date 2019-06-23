@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Repository;
 
-use App\Infrastructure\Entity\CachedResponse;
 use App\Domain\ValueObject\RequestHash;
+use App\Infrastructure\Entity\CachedResponse;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Types\Type;
@@ -22,9 +24,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class CachedResponseRepository extends ServiceEntityRepository
 {
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
@@ -37,9 +37,10 @@ class CachedResponseRepository extends ServiceEntityRepository
 
     /**
      * @return CachedResponse[]
+     *
      * @throws Exception
      */
-    public function findMostOutdated(): array
+    public function findMostOutdated() : array
     {
         return $this->createQueryBuilder('cr')
             ->where('cr.updatedAt < :threshold')
@@ -52,9 +53,10 @@ class CachedResponseRepository extends ServiceEntityRepository
 
     /**
      * @return CachedResponse[]
+     *
      * @throws Exception
      */
-    public function findUnused(): array
+    public function findUnused() : array
     {
         return $this->createQueryBuilder('cr')
             ->where('cr.lastCacheHitAt < :threshold')
@@ -63,7 +65,7 @@ class CachedResponseRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByRequestHash(RequestHash $hash): ?CachedResponse
+    public function findByRequestHash(RequestHash $hash) : ?CachedResponse
     {
         try {
             return $this->createQueryBuilder('cr')
@@ -72,32 +74,29 @@ class CachedResponseRepository extends ServiceEntityRepository
                 ->orderBy('cr.createdAt', 'DESC')
                 ->setMaxResults(1)
                 ->getQuery()
-                ->getOneOrNullResult()
-                ;
+                ->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
             return null;
         }
     }
 
-    public function save(CachedResponse $cachedResponse) {
+    public function save(CachedResponse $cachedResponse) : void
+    {
         try {
             $this->getEntityManager()->persist($cachedResponse);
             $this->getEntityManager()->flush();
         } catch (ORMInvalidArgumentException | ORMException $e) {
-            $this->logger->error('Unable to save record to database', [
-                'record' => $cachedResponse
-            ]);
+            $this->logger->error('Unable to save record to database', ['record' => $cachedResponse]);
         }
     }
 
-    public function delete(CachedResponse $cachedResponse) {
+    public function delete(CachedResponse $cachedResponse) : void
+    {
         try {
             $this->getEntityManager()->remove($cachedResponse);
             $this->getEntityManager()->flush();
         } catch (ORMInvalidArgumentException | ORMException $e) {
-            $this->logger->error('Unable to delete record from database', [
-                'record' => $cachedResponse
-            ]);
+            $this->logger->error('Unable to delete record from database', ['record' => $cachedResponse]);
         }
     }
 }

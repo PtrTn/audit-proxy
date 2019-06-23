@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Entity;
 
 use DateTimeImmutable;
@@ -13,104 +15,142 @@ use Symfony\Component\HttpFoundation\Response;
 class CachedResponse
 {
     /**
-     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
+     * @var int
      */
     private $id;
 
     /**
-     * @var string
      * @ORM\Column(type="string", length=255)
+     *
+     * @var string
      */
     private $requestHash;
 
     /**
-     * @var string
      * @ORM\Column(type="text")
+     *
+     * @var string
      */
     private $requestBody;
 
     /**
-     * @var string
      * @ORM\Column(type="text")
+     *
+     * @var string
      */
     private $response;
 
     /**
-     * @var DateTimeInterface
      * @ORM\Column(type="datetime")
+     *
+     * @var DateTimeInterface
      */
     private $createdAt;
 
     /**
-     * @var DateTimeInterface
      * @ORM\Column(type="datetime")
+     *
+     * @var DateTimeInterface
      */
     private $updatedAt;
 
     /**
-     * @var DateTimeInterface
      * @ORM\Column(type="datetime")
+     *
+     * @var DateTimeInterface
      */
     private $lastCacheHitAt;
 
-    public function setId(int $id): void
+    public function setId(int $id) : void
     {
         $this->id = $id;
     }
 
-    public function setRequestHash(string $requestHash): self
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+    public function setRequestHash(string $requestHash) : self
     {
         $this->requestHash = $requestHash;
 
         return $this;
     }
 
-    public function setRequestBody(string $requestBody): self
+    public function getRequestHash() : string
+    {
+        return $this->requestHash;
+    }
+
+    public function setRequestBody(string $requestBody) : self
     {
         $this->requestBody = $requestBody;
 
         return $this;
     }
 
-    public function setResponse(string $response): self
+    public function getRequestBody() : string
+    {
+        return $this->requestBody;
+    }
+
+    public function setResponse(string $response) : self
     {
         $this->response = $response;
 
         return $this;
     }
 
-    public function setCreatedAt(DateTimeInterface $createdAt): self
+    public function getResponse() : string
+    {
+        return $this->response;
+    }
+
+    public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function setUpdatedAt(DateTimeInterface $updatedAt): void
+    public function getCreatedAt() : DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setUpdatedAt(DateTimeInterface $updatedAt) : void
     {
         $this->updatedAt = $updatedAt;
     }
 
-    public function setLastCacheHitAt(DateTimeInterface $lastCacheHitAt): void
+    public function getUpdatedAt() : DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setLastCacheHitAt(DateTimeInterface $lastCacheHitAt) : void
     {
         $this->lastCacheHitAt = $lastCacheHitAt;
     }
 
-    public function getId(): int
+    public function getLastCacheHitAt() : DateTimeInterface
     {
-        return $this->id;
+        return $this->lastCacheHitAt;
     }
 
-    public function isValid(): bool
+    public function isValid() : bool
     {
         $yesterday = new DateTimeImmutable('1 hour ago');
+
         return $this->createdAt > $yesterday;
     }
 
-    public function toSymfonyResponse(): Response
+    public function toSymfonyResponse() : Response
     {
         return new Response(
             $this->response,
@@ -120,10 +160,5 @@ class CachedResponse
                 'X-Cache' => 'HIT',
             ]
         );
-    }
-
-    public function getRequestBody(): string
-    {
-        return $this->requestBody;
     }
 }

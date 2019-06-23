@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Integration\Infrastructure\Command;
 
 use App\Infrastructure\Command\RefreshCacheCliCommand;
@@ -8,12 +10,12 @@ use App\Tests\Helpers\KernelTestCase;
 
 class RefreshCacheCliCommandTest extends KernelTestCase
 {
-    public function setUp()
+    public function setUp() : void
     {
         $this->runSeeder(OutdatedCachedResponseSeeder::class);
     }
 
-    public function testExecute()
+    public function testExecute() : void
     {
         $output = $this->runCommand(RefreshCacheCliCommand::NAME);
 

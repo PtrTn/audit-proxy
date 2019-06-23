@@ -1,32 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command;
 
-use App\Infrastructure\Factory\CachedResponseFactory;
 use App\Application\Factory\RequestHashFactory;
+use App\Infrastructure\Factory\CachedResponseFactory;
 use App\Infrastructure\Repository\CachedResponseRepository;
 use App\Infrastructure\Repository\UncachedResponseRepository;
 
 class StoreCacheResponseCommandHandler
 {
-    /**
-     * @var RequestHashFactory
-     */
+    /** @var RequestHashFactory */
     private $requestHashFactory;
 
-    /**
-     * @var CachedResponseRepository
-     */
+    /** @var CachedResponseRepository */
     private $responseRepository;
 
-    /**
-     * @var CachedResponseFactory
-     */
+    /** @var CachedResponseFactory */
     private $cachedResponseFactory;
 
-    /**
-     * @var UncachedResponseRepository
-     */
+    /** @var UncachedResponseRepository */
     private $uncachedResponseRepository;
 
     public function __construct(
@@ -35,15 +29,15 @@ class StoreCacheResponseCommandHandler
         CachedResponseFactory $cachedResponseFactory,
         UncachedResponseRepository $uncachedResponseRepository
     ) {
-        $this->requestHashFactory = $requestHashFactory;
-        $this->responseRepository = $responseRepository;
-        $this->cachedResponseFactory = $cachedResponseFactory;
+        $this->requestHashFactory         = $requestHashFactory;
+        $this->responseRepository         = $responseRepository;
+        $this->cachedResponseFactory      = $cachedResponseFactory;
         $this->uncachedResponseRepository = $uncachedResponseRepository;
     }
 
-    public function handle(StoreCacheResponseCommand $command): void
+    public function handle(StoreCacheResponseCommand $command) : void
     {
-        $hash = $this->requestHashFactory->createFromRequest($command->getRequestBody());
+        $hash           = $this->requestHashFactory->createFromRequest($command->getRequestBody());
         $cachedResponse = $this->cachedResponseFactory->createFromResponse(
             $hash,
             $command->getRequestBody(),

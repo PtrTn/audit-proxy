@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Factory;
 
 use App\Application\Dto\UncachedResponse;
-use App\Infrastructure\Entity\CachedResponse;
 use App\Domain\ValueObject\RequestHash;
+use App\Infrastructure\Entity\CachedResponse;
 use DateTimeImmutable;
 
 class CachedResponseFactory
@@ -13,9 +15,9 @@ class CachedResponseFactory
         RequestHash $requestHash,
         string $requestBody,
         UncachedResponse $response
-    ): CachedResponse {
+    ) : CachedResponse {
         $cachedResponse = new CachedResponse();
-        $cachedResponse->setRequestHash($requestHash);
+        $cachedResponse->setRequestHash((string) $requestHash);
         $cachedResponse->setRequestBody($requestBody);
         $cachedResponse->setResponse($response->getResponse());
         $cachedResponse->setCreatedAt(new DateTimeImmutable());

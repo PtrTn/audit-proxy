@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Command;
 
 use App\Application\Command\StoreCacheResponseCommand;
@@ -18,7 +20,7 @@ class StoreCacheResponseCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldStoreCachedResponse()
+    public function shouldStoreCachedResponse() : void
     {
         $hashFactory = $this->createMock(RequestHashFactory::class);
         $hashFactory->method('createFromRequest')->willReturn(new RequestHash('some-hash'));
@@ -26,7 +28,7 @@ class StoreCacheResponseCommandHandlerTest extends TestCase
         $responseRepository = $this->createMock(CachedResponseRepository::class);
         $responseRepository->expects($this->once())->method('save');
 
-        $cachedResponse = $this->createMock(CachedResponse::class);
+        $cachedResponse        = $this->createMock(CachedResponse::class);
         $cachedResponseFactory = $this->createMock(CachedResponseFactory::class);
         $cachedResponseFactory->method('createFromResponse')->willReturn($cachedResponse);
 
@@ -34,8 +36,8 @@ class StoreCacheResponseCommandHandlerTest extends TestCase
         $uncachedResponseRepository->method('deleteForHash');
 
         $uncachedResponse = $this->createMock(UncachedResponse::class);
-        $command = new StoreCacheResponseCommand('some-request-body', $uncachedResponse);
-        $handler = new StoreCacheResponseCommandHandler(
+        $command          = new StoreCacheResponseCommand('some-request-body', $uncachedResponse);
+        $handler          = new StoreCacheResponseCommandHandler(
             $hashFactory,
             $responseRepository,
             $cachedResponseFactory,
@@ -43,11 +45,11 @@ class StoreCacheResponseCommandHandlerTest extends TestCase
         );
         $handler->handle($command);
     }
-    
+
     /**
      * @test
      */
-    public function shouldRemoveUncachedResponseAfterCaching()
+    public function shouldRemoveUncachedResponseAfterCaching() : void
     {
         $hashFactory = $this->createMock(RequestHashFactory::class);
         $hashFactory->method('createFromRequest')->willReturn(new RequestHash('some-hash'));
@@ -55,7 +57,7 @@ class StoreCacheResponseCommandHandlerTest extends TestCase
         $responseRepository = $this->createMock(CachedResponseRepository::class);
         $responseRepository->method('save');
 
-        $cachedResponse = $this->createMock(CachedResponse::class);
+        $cachedResponse        = $this->createMock(CachedResponse::class);
         $cachedResponseFactory = $this->createMock(CachedResponseFactory::class);
         $cachedResponseFactory->method('createFromResponse')->willReturn($cachedResponse);
 
@@ -63,8 +65,8 @@ class StoreCacheResponseCommandHandlerTest extends TestCase
         $uncachedResponseRepository->expects($this->once())->method('deleteForHash');
 
         $uncachedResponse = $this->createMock(UncachedResponse::class);
-        $command = new StoreCacheResponseCommand('some-request-body', $uncachedResponse);
-        $handler = new StoreCacheResponseCommandHandler(
+        $command          = new StoreCacheResponseCommand('some-request-body', $uncachedResponse);
+        $handler          = new StoreCacheResponseCommandHandler(
             $hashFactory,
             $responseRepository,
             $cachedResponseFactory,

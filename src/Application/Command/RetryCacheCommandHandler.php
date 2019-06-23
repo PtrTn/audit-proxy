@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command;
 
 use App\Application\Query\FindUncachedResponseQuery;
@@ -8,19 +10,13 @@ use App\Infrastructure\Repository\UncachedResponseRepository;
 
 class RetryCacheCommandHandler
 {
-    /**
-     * @var UncachedResponseRepository
-     */
+    /** @var UncachedResponseRepository */
     private $repository;
 
-    /**
-     * @var FindUncachedResponseQueryHandler
-     */
+    /** @var FindUncachedResponseQueryHandler */
     private $queryHandler;
 
-    /**
-     * @var StoreCacheResponseCommandHandler
-     */
+    /** @var StoreCacheResponseCommandHandler */
     private $storeResponseCommandHandler;
 
     public function __construct(
@@ -28,12 +24,12 @@ class RetryCacheCommandHandler
         FindUncachedResponseQueryHandler $queryHandler,
         StoreCacheResponseCommandHandler $storeResponseCommandHandler
     ) {
-        $this->repository = $repository;
-        $this->queryHandler = $queryHandler;
+        $this->repository                  = $repository;
+        $this->queryHandler                = $queryHandler;
         $this->storeResponseCommandHandler = $storeResponseCommandHandler;
     }
 
-    public function handle(RetryCacheCommand $command): void
+    public function handle(RetryCacheCommand $command) : void
     {
         $uncachedResponses = $this->repository->findMostRecent();
         foreach ($uncachedResponses as $uncachedResponse) {

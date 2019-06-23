@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Command;
 
 use App\Application\Command\StoreCacheRequestCommand;
@@ -16,7 +18,7 @@ class StoreCacheRequestCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldStoreRequestCache()
+    public function shouldStoreRequestCache() : void
     {
         $hashFactory = $this->createMock(RequestHashFactory::class);
         $hashFactory->method('createFromRequest')->willReturn(new RequestHash('some-hash'));
@@ -26,7 +28,7 @@ class StoreCacheRequestCommandHandlerTest extends TestCase
         $repository->expects($this->once())->method('save');
 
         $uncachedResponse = $this->createMock(UncachedResponse::class);
-        $responseFactory = $this->createMock(UncachedResponseFactory::class);
+        $responseFactory  = $this->createMock(UncachedResponseFactory::class);
         $responseFactory->method('createFromResponse')->willReturn($uncachedResponse);
 
         $command = new StoreCacheRequestCommand('some-request-body');
@@ -41,7 +43,7 @@ class StoreCacheRequestCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotStoreIfAlreadyCached()
+    public function shouldNotStoreIfAlreadyCached() : void
     {
         $hashFactory = $this->createMock(RequestHashFactory::class);
         $hashFactory->method('createFromRequest')->willReturn(new RequestHash('some-hash'));

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Command;
 
 use App\Application\Command\CleanupCacheCommand;
@@ -12,9 +14,7 @@ class CacheCleanupCliCommand extends Command
 {
     public const NAME = 'app:cache:cleanup';
 
-    /**
-     * @var CleanupCacheCommandHandler
-     */
+    /** @var CleanupCacheCommandHandler */
     private $commandHandler;
 
     public function __construct(CleanupCacheCommandHandler $commandHandler)
@@ -23,7 +23,7 @@ class CacheCleanupCliCommand extends Command
         $this->commandHandler = $commandHandler;
     }
 
-    protected function configure()
+    protected function configure() : void
     {
         $this
             ->setName(self::NAME)
@@ -31,10 +31,12 @@ class CacheCleanupCliCommand extends Command
             ->setHelp('This command will clean up inactive audit data for each cached item');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $output->writeln('Starting cache cleanup');
         $this->commandHandler->handle(new CleanupCacheCommand());
         $output->writeln('Done cleaning up cache');
+
+        return 0;
     }
 }

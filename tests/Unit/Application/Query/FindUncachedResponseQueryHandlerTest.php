@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Query;
 
 use App\Application\Dto\UncachedResponse;
@@ -19,10 +21,10 @@ class FindUncachedResponseQueryHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnIfResponse()
+    public function shouldReturnIfResponse() : void
     {
-        $request = $this->createMock(Request::class);
-        $response = $this->createMock(ResponseInterface::class);
+        $request          = $this->createMock(Request::class);
+        $response         = $this->createMock(ResponseInterface::class);
         $uncachedResponse = $this->createMock(UncachedResponse::class);
 
         $mapper = $this->createMock(GuzzleRequestFactory::class);
@@ -36,7 +38,7 @@ class FindUncachedResponseQueryHandlerTest extends TestCase
 
         $logger = $this->createMock(LoggerInterface::class);
 
-        $query = new FindUncachedResponseQuery('request-body');
+        $query   = new FindUncachedResponseQuery('request-body');
         $handler = new FindUncachedResponseQueryHandler($mapper, $client, $factory, $logger);
 
         $actualResponse = $handler->handle($query);
@@ -46,9 +48,9 @@ class FindUncachedResponseQueryHandlerTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnNullAndLogIfError()
+    public function shouldReturnNullAndLogIfError() : void
     {
-        $request = $this->createMock(Request::class);
+        $request  = $this->createMock(Request::class);
         $response = $this->createMock(ResponseInterface::class);
 
         $mapper = $this->createMock(GuzzleRequestFactory::class);
@@ -64,7 +66,7 @@ class FindUncachedResponseQueryHandlerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('warning');
 
-        $query = new FindUncachedResponseQuery('request-body');
+        $query   = new FindUncachedResponseQuery('request-body');
         $handler = new FindUncachedResponseQueryHandler($mapper, $client, $factory, $logger);
 
         $actualResponse = $handler->handle($query);

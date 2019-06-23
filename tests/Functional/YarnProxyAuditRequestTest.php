@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Functional;
 
-use App\Tests\Helpers\FixtureAwareTrait;
+use App\Tests\Helpers\FixtureAware;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
@@ -10,21 +12,19 @@ use PHPUnit\Framework\TestCase;
 
 class YarnProxyAuditRequestTest extends TestCase
 {
-    use FixtureAwareTrait;
+    use FixtureAware;
 
-    /**
-     * @var Client
-     */
+    /** @var Client */
     private $client;
 
-    public function setUp(): void
+    public function setUp() : void
     {
         $this->client = new Client();
     }
 
-    public function testWithGzippedBody(): void
+    public function testWithGzippedBody() : void
     {
-        $request = new Request(
+        $request  = new Request(
             'POST',
             new Uri('http://audit-proxy.test/-/npm/v1/security/audits'),
             $this->getContentsFromJson('headers-yarn.json'),
